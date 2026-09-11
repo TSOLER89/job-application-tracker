@@ -1,6 +1,7 @@
 import './App.css'
 import Header from './components/Header'
-import ApplicationCard from './components/ApplicationCard'
+import ApplicationList from './components/ApplicationList'
+
 
 function App() {
   const applications = [
@@ -33,18 +34,7 @@ function App() {
 
       <main className="main-content">
         <h2>Mina jobbansökningar</h2>
-
-        <div /*.map()ta varje ansökan och rendera en ApplicationCard */className="application-list">
-          {applications.map ((application) => (
-            <ApplicationCard
-              key={application.id}
-              company={application.company}
-              position={application.position}
-              location={application.location}
-              status={application.status}
-            />
-          ))}
-        </div>
+        <ApplicationList applications={applications} />
       </main>
     </div>
   )
