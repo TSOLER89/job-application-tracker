@@ -10,11 +10,11 @@ function ApplicationCard({
             <h3>{company}</h3>
 
             <p>
-                <strong>Tjänst:</strong>{position}
+                <strong>Tjänst:</strong> {position}
             </p>
 
             <p>
-                <strong>Plats:</strong>{location}
+                <strong>Plats:</strong> {location}
             </p>
 
             <p>
