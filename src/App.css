@@ -27,3 +27,14 @@ main {
 .application-card h3 {
   margin-top: 0;
 }
+
+/* Application List Styles */
+.application-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.application-card {
+  flex: 1 1 280px;
+}
