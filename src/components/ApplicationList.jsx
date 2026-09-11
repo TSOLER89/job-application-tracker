@@ -10,6 +10,7 @@ function ApplicationList({ applications }) {
           position={application.position}
           location={application.location}
           status={application.status}
+          notes={application.notes}
         />
       ))}
     </div>

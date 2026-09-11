@@ -2,10 +2,11 @@ import './App.css'
 import Header from './components/Header'
 import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
+import { useState } from 'react'
 
 
 function App() {
-  const applications = [
+  const [applications, setApplications] = useState([
     {
       id: 1,
       company: 'Consid',
@@ -27,14 +28,23 @@ function App() {
       location: 'Linköping',
       status: 'Intresserad'
     }
-  ]
+  ])
+
+  function addApplication(application) {
+  const newApplication = {
+    id: Date.now(),
+    ...application
+  }
+
+  setApplications([...applications, newApplication])
+}
 
   return (
     <div className="app">
       <Header />
 
    <main className="main-content">
-  <ApplicationForm />
+  <ApplicationForm onAdd={addApplication} />
 
   <h2>Mina jobbansökningar</h2>
 

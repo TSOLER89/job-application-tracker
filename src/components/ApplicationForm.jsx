@@ -1,13 +1,58 @@
-function ApplicationForm() {
+import { useState } from 'react'
+
+function ApplicationForm({ onAdd }) {
+  const [formData, setFormData] = useState({
+    company: '',
+    position: '',
+    location: '',
+    status: 'Intresserad',
+    notes: ''
+  })
+
+  function handleChange(event) {
+    const { name, value } = event.target
+
+    setFormData({
+      ...formData,
+      [name]: value
+    })
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    if (
+      !formData.company.trim() ||
+      !formData.position.trim() ||
+      !formData.location.trim()
+    ) {
+      return
+    }
+
+    onAdd(formData)
+
+    setFormData({
+      company: '',
+      position: '',
+      location: '',
+      status: 'Intresserad',
+      notes: ''
+    })
+  }
+
   return (
-    <form className="application-form">
+    <form className="application-form" onSubmit={handleSubmit}>
       <h2>Lägg till jobbansökan</h2>
 
       <label>
         Företag
         <input
           type="text"
-          placeholder="t.ex. IT Företag"
+          name="company"
+          value={formData.company}
+          onChange={handleChange}
+          placeholder="Skriv företagsnamn"
+          required
         />
       </label>
 
@@ -15,7 +60,11 @@ function ApplicationForm() {
         Tjänst
         <input
           type="text"
-          placeholder="t.ex. Junior .NET-utvecklare"
+          name="position"
+          value={formData.position}
+          onChange={handleChange}
+          placeholder="Skriv tjänstens namn"
+          required
         />
       </label>
 
@@ -23,13 +72,21 @@ function ApplicationForm() {
         Plats
         <input
           type="text"
-          placeholder="t.ex. Linköping"
+          name="location"
+          value={formData.location}
+          onChange={handleChange}
+          placeholder="Skriv plats"
+          required
         />
       </label>
 
       <label>
         Status
-        <select>
+        <select
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+        >
           <option value="Intresserad">Intresserad</option>
           <option value="Ansökt">Ansökt</option>
           <option value="Intervju">Intervju</option>
@@ -41,13 +98,16 @@ function ApplicationForm() {
       <label>
         Anteckningar
         <textarea
-          placeholder="Skriv en anteckning..."
+          name="notes"
+          value={formData.notes}
+          onChange={handleChange}
+          placeholder="Skriv anteckningar om ansökan..."
           rows="4"
         />
       </label>
 
       <button type="submit">
-        Spara Ansökan
+        Spara ansökan
       </button>
     </form>
   )

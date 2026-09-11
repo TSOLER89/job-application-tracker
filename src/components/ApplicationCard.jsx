@@ -1,4 +1,10 @@
-function ApplicationCard({ company, position, location, status }) {
+function ApplicationCard({ 
+    company, 
+    position, 
+    location, 
+    status,
+    notes
+}) {
     return (
         <div className="application-card">
             <h3>{company}</h3>
@@ -14,7 +20,12 @@ function ApplicationCard({ company, position, location, status }) {
             <p>
                 <strong>Status:</strong>{status}
             </p>
-            
+                {notes && (
+                    <p>
+                        <strong>Anteckningar:</strong>{notes}
+                    </p>
+                )}
+
         </div>
     )
 }
