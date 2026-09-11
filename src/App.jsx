@@ -1,16 +1,15 @@
+import Header from './components/Header'
+
 import './App.css'
 
 function App() {
   return (
     <div className="app">
-      <header className="header">
-        <h1>JobTrack</h1>
-        <p>Track your applications. Build your career.</p>
-      </header>
+      <Header />
 
       <main>
-        <h2>My Job Applications</h2>
-        <p>Your job applications will appear here.</p>
+        <h2>Mina jobbansökningar</h2>
+        <p>Dina jobbansökningar kommer att visas här.</p>
       </main>
     </div>
   )
