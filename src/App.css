@@ -14,3 +14,16 @@
 main {
   padding: 2rem;
 }
+
+/* Application Card Styles */
+.application-card {
+  background-color: white;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  border-radius: 10px;
+  max-width: 400px;
+}
+
+.application-card h3 {
+  margin-top: 0;
+}
