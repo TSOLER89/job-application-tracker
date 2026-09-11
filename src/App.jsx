@@ -1,6 +1,7 @@
 import './App.css'
 import Header from './components/Header'
 import ApplicationList from './components/ApplicationList'
+import ApplicationForm from './components/ApplicationForm'
 
 
 function App() {
@@ -32,10 +33,13 @@ function App() {
     <div className="app">
       <Header />
 
-      <main className="main-content">
-        <h2>Mina jobbansökningar</h2>
-        <ApplicationList applications={applications} />
-      </main>
+   <main className="main-content">
+  <ApplicationForm />
+
+  <h2>Mina jobbansökningar</h2>
+
+  <ApplicationList applications={applications} />
+</main>
     </div>
   )
 }
