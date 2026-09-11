@@ -1,0 +1,16 @@
+.app {
+  width: 100%;
+}
+
+.header {
+  padding: 2rem;
+  text-align: center;
+}
+
+.header h1 {
+  margin-bottom: 0.5rem;
+}
+
+main {
+  padding: 2rem;
+}
