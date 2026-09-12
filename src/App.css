@@ -96,6 +96,26 @@
   color: #111827;
 }
 
+/* Buttons and Form Actions */
+.edit-button {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.application-form .cancel-button {
+  background-color: #6b7280;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {

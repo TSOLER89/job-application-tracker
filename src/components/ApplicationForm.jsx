@@ -1,13 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-function ApplicationForm({ onAdd }) {
-  const [formData, setFormData] = useState({
-    company: '',
-    position: '',
-    location: '',
-    status: 'Intresserad',
-    notes: ''
-  })
+const emptyForm = {
+  company: '',
+  position: '',
+  location: '',
+  status: 'Intresserad',
+  notes: ''
+}
+
+function ApplicationForm({
+  onAdd,
+  onUpdate,
+  editingApplication,
+  onCancelEdit
+}) {
+  const [formData, setFormData] = useState(emptyForm)
+
+  useEffect(() => {
+    if (editingApplication) {
+      setFormData({
+        company: editingApplication.company,
+        position: editingApplication.position,
+        location: editingApplication.location,
+        status: editingApplication.status,
+        notes: editingApplication.notes || ''
+      })
+    } else {
+      setFormData(emptyForm)
+    }
+  }, [editingApplication])
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -29,20 +50,25 @@ function ApplicationForm({ onAdd }) {
       return
     }
 
-    onAdd(formData)
+    if (editingApplication) {
+      onUpdate({
+        ...editingApplication,
+        ...formData
+      })
+    } else {
+      onAdd(formData)
+    }
 
-    setFormData({
-      company: '',
-      position: '',
-      location: '',
-      status: 'Intresserad',
-      notes: ''
-    })
+    setFormData(emptyForm)
   }
 
   return (
     <form className="application-form" onSubmit={handleSubmit}>
-      <h2>Lägg till jobbansökan</h2>
+      <h2>
+        {editingApplication
+          ? 'Redigera jobbansökan'
+          : 'Lägg till jobbansökan'}
+      </h2>
 
       <label>
         Företag
@@ -106,9 +132,23 @@ function ApplicationForm({ onAdd }) {
         />
       </label>
 
-      <button type="submit">
-        Spara ansökan
-      </button>
+      <div className="form-actions">
+        <button type="submit">
+          {editingApplication
+            ? 'Uppdatera ansökan'
+            : 'Spara ansökan'}
+        </button>
+
+        {editingApplication && (
+          <button
+            type="button"
+            className="cancel-button"
+            onClick={onCancelEdit}
+          >
+            Avbryt
+          </button>
+        )}
+      </div>
     </form>
   )
 }

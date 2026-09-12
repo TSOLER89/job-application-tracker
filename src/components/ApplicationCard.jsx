@@ -3,7 +3,8 @@ function ApplicationCard({
     position, 
     location, 
     status,
-    notes
+    notes,
+    onEdit
 }) {
     return (
         <div className="application-card">
@@ -26,6 +27,13 @@ function ApplicationCard({
                     </p>
                 )}
 
+            <button 
+            type="button"
+            className="edit-button"
+            onClick={onEdit}
+            >
+             Redigera
+            </button>
         </div>
     )
 }
