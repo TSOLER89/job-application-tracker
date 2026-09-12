@@ -2,6 +2,7 @@ function ApplicationCard({
     company, 
     position, 
     location, 
+    dateApplied,
     status,
     notes,
     onEdit
@@ -17,6 +18,13 @@ function ApplicationCard({
             <p>
                 <strong>Plats:</strong> {location}
             </p>
+
+             {status !== 'Intresserad' && dateApplied && (
+                <p>
+                    <strong>Ansökningsdatum:</strong>{' '}
+                    {new Date(dateApplied).toLocaleDateString('sv-SE')}
+                </p>
+                )}
 
             <p>
              <strong>Status:</strong>{' '}

@@ -9,6 +9,7 @@ function ApplicationList({ applications, onEdit }) {
           company={application.company}
           position={application.position}
           location={application.location}
+          dateApplied={application.dateApplied}
           status={application.status}
           notes={application.notes}
           onEdit={() => onEdit(application)}

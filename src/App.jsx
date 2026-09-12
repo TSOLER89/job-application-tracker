@@ -11,6 +11,7 @@ function App() {
       company: 'Consid',
       position: 'Junior .NET-utvecklare',
       location: 'Linköping',
+      dateApplied: '2026-09-01',
       status: 'Intervju',
       notes: ''
     },
@@ -19,6 +20,7 @@ function App() {
       company: 'Sectra',
       position: 'Systemutvecklare',
       location: 'Linköping',
+      dateApplied: '2026-09-09',
       status: 'Ansökt',
       notes: ''
     },
@@ -27,6 +29,7 @@ function App() {
       company: 'Saab',
       position: 'Junior Software Developer',
       location: 'Linköping',
+      dateApplied: '',
       status: 'Intresserad',
       notes: ''
     }

@@ -4,7 +4,8 @@ const emptyForm = {
   company: '',
   position: '',
   location: '',
-  status: 'Intresserad',
+  dateApplied: '',
+  status: 'Ansökt',
   notes: ''
 }
 
@@ -22,6 +23,7 @@ function ApplicationForm({
         company: editingApplication.company,
         position: editingApplication.position,
         location: editingApplication.location,
+        dateApplied: editingApplication.dateApplied || '',
         status: editingApplication.status,
         notes: editingApplication.notes || ''
       })
@@ -30,14 +32,22 @@ function ApplicationForm({
     }
   }, [editingApplication])
 
-  function handleChange(event) {
-    const { name, value } = event.target
+function handleChange(event) {
+  const { name, value } = event.target
 
-    setFormData({
-      ...formData,
+  setFormData((previousData) => {
+    const updatedData = {
+      ...previousData,
       [name]: value
-    })
-  }
+    }
+
+    if (name === 'status' && value === 'Intresserad') {
+      updatedData.dateApplied = ''
+    }
+
+    return updatedData
+  })
+}
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -107,14 +117,25 @@ function ApplicationForm({
       </label>
 
       <label>
+        Ansökt datum
+        <input
+          type="date"
+          name="dateApplied"
+          value={formData.dateApplied}
+          onChange={handleChange}
+          disabled={formData.status === 'Intresserad'}
+        />
+      </label>
+
+      <label>
         Status
         <select
           name="status"
           value={formData.status}
           onChange={handleChange}
         >
-          <option value="Intresserad">Intresserad</option>
           <option value="Ansökt">Ansökt</option>
+          <option value="Intresserad">Intresserad</option>
           <option value="Intervju">Intervju</option>
           <option value="Erbjudande">Erbjudande</option>
           <option value="Avslag">Avslag</option>
