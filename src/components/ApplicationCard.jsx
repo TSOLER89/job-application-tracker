@@ -19,7 +19,10 @@ function ApplicationCard({
             </p>
 
             <p>
-                <strong>Status:</strong>{status}
+             <strong>Status:</strong>{' '}
+            <span className={`status-badge status-${status.toLowerCase()}`}>
+                {status}
+            </span>
             </p>
                 {notes && (
                     <p>

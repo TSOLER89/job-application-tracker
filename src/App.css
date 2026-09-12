@@ -116,6 +116,40 @@
   background-color: #6b7280;
 }
 
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.status-intresserad {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.status-ansökt {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-intervju {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-erbjudande {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-avslag {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {
