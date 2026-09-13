@@ -150,6 +150,39 @@
   color: #991b1b;
 }
 
+/* Image Preview */
+.image-preview-container {
+  margin-bottom: 1rem;
+}
+
+.image-preview-container p {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.image-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+.remove-image-button {
+  padding: 0.5rem 0.8rem;
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.application-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
 /* Mobile */
 
 @media (max-width: 768px) {
