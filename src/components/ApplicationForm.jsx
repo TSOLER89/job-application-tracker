@@ -6,7 +6,8 @@ const emptyForm = {
   location: '',
   dateApplied: '',
   status: 'Ansökt',
-  notes: ''
+  notes: '',
+  imageUrl: ''
 }
 
 function ApplicationForm({
@@ -25,7 +26,8 @@ function ApplicationForm({
         location: editingApplication.location,
         dateApplied: editingApplication.dateApplied || '',
         status: editingApplication.status,
-        notes: editingApplication.notes || ''
+        notes: editingApplication.notes || '',
+        imageUrl: editingApplication.imageUrl || ''
       })
     } else {
       setFormData(emptyForm)
@@ -47,6 +49,32 @@ function handleChange(event) {
 
     return updatedData
   })
+}
+
+function handleImageChange(event) {
+  const file = event.target.files[0]
+
+  if (!file) {
+    return
+  }
+
+  const reader = new FileReader()
+
+  reader.onload = () => {
+    setFormData((previousData) => ({
+      ...previousData,
+      imageUrl: reader.result
+    }))
+  }
+
+  reader.readAsDataURL(file)
+}
+
+function removeImage() {
+  setFormData((previousData) => ({
+    ...previousData,
+    imageUrl: ''
+  }))
 }
 
   function handleSubmit(event) {
@@ -153,6 +181,34 @@ function handleChange(event) {
         />
       </label>
 
+        <label>
+              Bild
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+         </label>
+
+    {formData.imageUrl && (
+  <div className="image-preview-container">
+    <p>Förhandsvisning</p>
+
+    <img
+      src={formData.imageUrl}
+      alt="Förhandsvisning"
+      className="image-preview"
+    />
+            <button
+              type="button"
+              className="remove-image-button"
+              onClick={removeImage}
+            >
+              Ta bort bild
+            </button>
+          </div>
+        )}
+          
       <div className="form-actions">
         <button type="submit">
           {editingApplication

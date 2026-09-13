@@ -12,6 +12,7 @@ function ApplicationList({ applications, onEdit }) {
           dateApplied={application.dateApplied}
           status={application.status}
           notes={application.notes}
+          imageUrl={application.imageUrl}
           onEdit={() => onEdit(application)}
         />
       ))}
