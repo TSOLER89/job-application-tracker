@@ -5,12 +5,19 @@ function ApplicationCard({
     dateApplied,
     status,
     notes,
+    imageUrl,
     onEdit
 }) {
     return (
         <div className="application-card">
             <h3>{company}</h3>
-
+                    {imageUrl && (
+            <img
+                src={imageUrl}
+                alt={`Bild för ${company}`}
+                className="application-image"
+            />
+            )}
             <p>
                 <strong>Tjänst:</strong> {position}
             </p>
