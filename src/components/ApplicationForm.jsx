@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const emptyForm = {
   company: '',
@@ -18,6 +18,9 @@ function ApplicationForm({
 }) {
   const [formData, setFormData] = useState(emptyForm)
 
+  const fileInputRef = useRef(null)
+  const formRef = useRef(null)
+
   useEffect(() => {
     if (editingApplication) {
       setFormData({
@@ -29,53 +32,66 @@ function ApplicationForm({
         notes: editingApplication.notes || '',
         imageUrl: editingApplication.imageUrl || ''
       })
+
+      formRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
     } else {
       setFormData(emptyForm)
     }
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }, [editingApplication])
 
-function handleChange(event) {
-  const { name, value } = event.target
+  function handleChange(event) {
+    const { name, value } = event.target
 
-  setFormData((previousData) => {
-    const updatedData = {
-      ...previousData,
-      [name]: value
-    }
+    setFormData((previousData) => {
+      const updatedData = {
+        ...previousData,
+        [name]: value
+      }
 
-    if (name === 'status' && value === 'Intresserad') {
-      updatedData.dateApplied = ''
-    }
+      if (name === 'status' && value === 'Intresserad') {
+        updatedData.dateApplied = ''
+      }
 
-    return updatedData
-  })
-}
-
-function handleImageChange(event) {
-  const file = event.target.files[0]
-
-  if (!file) {
-    return
+      return updatedData
+    })
   }
 
-  const reader = new FileReader()
+  function handleImageChange(event) {
+    const file = event.target.files[0]
 
-  reader.onload = () => {
+    if (!file) {
+      return
+    }
+
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      setFormData((previousData) => ({
+        ...previousData,
+        imageUrl: reader.result
+      }))
+    }
+
+    reader.readAsDataURL(file)
+  }
+
+  function removeImage() {
     setFormData((previousData) => ({
       ...previousData,
-      imageUrl: reader.result
+      imageUrl: ''
     }))
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
-
-  reader.readAsDataURL(file)
-}
-
-function removeImage() {
-  setFormData((previousData) => ({
-    ...previousData,
-    imageUrl: ''
-  }))
-}
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -98,10 +114,18 @@ function removeImage() {
     }
 
     setFormData(emptyForm)
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
 
   return (
-    <form className="application-form" onSubmit={handleSubmit}>
+    <form
+      ref={formRef}
+      className="application-form"
+      onSubmit={handleSubmit}
+    >
       <h2>
         {editingApplication
           ? 'Redigera jobbansökan'
@@ -145,7 +169,7 @@ function removeImage() {
       </label>
 
       <label>
-        Ansökt datum
+        Ansökningsdatum
         <input
           type="date"
           name="dateApplied"
@@ -181,34 +205,39 @@ function removeImage() {
         />
       </label>
 
-        <label>
-              Bild
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-         </label>
+      <label>
+        Bild
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+      </label>
 
-    {formData.imageUrl && (
-  <div className="image-preview-container">
-    <p>Förhandsvisning</p>
+      {formData.imageUrl && (
+        <div className="image-preview-container">
+          <p>Förhandsvisning</p>
 
-    <img
-      src={formData.imageUrl}
-      alt="Förhandsvisning"
-      className="image-preview"
-    />
+          <div className="image-preview-wrapper">
+            <img
+              src={formData.imageUrl}
+              alt="Förhandsvisning"
+              className="image-preview"
+            />
+
             <button
               type="button"
               className="remove-image-button"
               onClick={removeImage}
+              aria-label="Ta bort bild"
             >
-              Ta bort bild
+              ×
             </button>
           </div>
-        )}
-          
+        </div>
+      )}
+
       <div className="form-actions">
         <button type="submit">
           {editingApplication
