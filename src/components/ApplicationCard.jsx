@@ -11,7 +11,12 @@ function ApplicationCard({
 }) {
     return (
         <div className="application-card">
-            <h3>{company}</h3>
+            <h3>
+                <span className="company-badge">
+                    {company}
+                </span>
+            </h3>
+            
                     {imageUrl && (
             <img
                 src={imageUrl}
