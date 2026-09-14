@@ -58,6 +58,24 @@ function App() {
     setEditingApplication(null)
   }
 
+  function deleteApplication(id) {
+  const confirmed = window.confirm(
+    'Är du säker på att du vill ta bort den här jobbansökan?'
+  )
+
+  if (!confirmed) {
+    return
+  }
+
+  setApplications(
+    applications.filter((application) => application.id !== id)
+  )
+
+  if (editingApplication?.id === id) {
+    setEditingApplication(null)
+  }
+}
+
   return (
     <div className="app">
       <Header />
@@ -75,6 +93,7 @@ function App() {
         <ApplicationList
           applications={applications}
           onEdit={setEditingApplication}
+          onDelete={deleteApplication}
         />
       </main>
     </div>

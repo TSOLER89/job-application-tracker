@@ -6,7 +6,8 @@ function ApplicationCard({
     status,
     notes,
     imageUrl,
-    onEdit
+    onEdit,
+    onDelete,
 }) {
     return (
         <div className="application-card">
@@ -51,6 +52,14 @@ function ApplicationCard({
             onClick={onEdit}
             >
              Redigera
+            </button>
+
+            <button
+            type="button"
+            className="delete-button"
+            onClick={onDelete}
+            >
+             Ta bort
             </button>
         </div>
     )
