@@ -46,21 +46,23 @@ function ApplicationCard({
                     </p>
                 )}
 
-            <button 
-            type="button"
-            className="edit-button"
-            onClick={onEdit}
-            >
-             Redigera
-            </button>
+            <div className="card-actions">
+                <button 
+                    type="button"
+                    className="edit-button"
+                    onClick={onEdit}
+                >
+                    Redigera
+                </button>
 
-            <button
-            type="button"
-            className="delete-button"
-            onClick={onDelete}
-            >
-             Ta bort
-            </button>
+                <button
+                    type="button"
+                    className="delete-button"
+                    onClick={onDelete}
+                >
+                    Ta bort
+                </button>
+            </div>
         </div>
     )
 }
