@@ -1,6 +1,18 @@
 import ApplicationCard from './ApplicationCard'
 
-function ApplicationList({ applications, onEdit }) {
+function ApplicationList({ applications, 
+  onEdit,
+  onDelete
+}) {
+  if (applications.length === 0) {
+      return (
+      <div className="empty-state">
+        <h3>Inga jobbansökningar ännu</h3>
+        <p>Lägg till din första jobbansökan ovan.</p>
+      </div>
+    )
+  }
+
   return ( /*.map()ta varje ansökan och rendera en ApplicationCard */
     <div className="application-list">
       {applications.map((application) => (
@@ -14,6 +26,7 @@ function ApplicationList({ applications, onEdit }) {
           notes={application.notes}
           imageUrl={application.imageUrl}
           onEdit={() => onEdit(application)}
+          onDelete={() => onDelete(application.id)}
         />
       ))}
     </div>
