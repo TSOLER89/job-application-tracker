@@ -41,6 +41,7 @@ function ApplicationForm({
     } else {
       setFormData(emptyForm)
     }
+    setSelectedFile(null)
 
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
