@@ -32,35 +32,63 @@ function App() {
 
   const [editingApplication, setEditingApplication] = useState(null)
 
-  async function addApplication(application) {
-    try{
-      const response = await fetch(
-        'http://localhost:5250/api/JobApplications',
+async function addApplication(application, selectedFile) {
+  try {
+    let imageUrl = ''
+
+    if (selectedFile) {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+
+      const uploadResponse = await fetch(
+        'http://localhost:5250/api/JobApplications/upload',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify ({
-            ...application,
-            dateApplied: application.dateApplied || null
-          })
+          body: formData
         }
       )
 
-      if (!response.ok) {
-        throw new Error('Kunde inte skapa jobbansökan.')
+      if (!uploadResponse.ok) {
+        throw new Error('Kunde inte ladda upp bilden.')
       }
 
-      const createdApplication = await response.json()
+      const uploadData = await uploadResponse.json()
 
-      setApplications([...applications, createdApplication])
-
-      setError('')
-    } catch (error) {
-      setError('Kunde inte lägga till jobbansökan på servern.')
+      imageUrl = `http://localhost:5250${uploadData.imageUrl}`
     }
+
+    const response = await fetch(
+      'http://localhost:5250/api/JobApplications',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...application,
+          imageUrl,
+          dateApplied: application.dateApplied || null
+        })
+      }
+    )
+
+    if (!response.ok) {
+      throw new Error('Kunde inte skapa jobbansökan.')
+    }
+
+    const createdApplication = await response.json()
+
+    setApplications((previousApplications) => [
+      ...previousApplications,
+      createdApplication
+    ])
+
+    setError('')
+  } catch (error) {
+    setError('Kunde inte spara jobbansökan eller bilden.')
   }
+}
+
   
     async function updateApplication(updatedApplication) {
       try{

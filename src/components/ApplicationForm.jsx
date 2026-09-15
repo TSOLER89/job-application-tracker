@@ -17,6 +17,7 @@ function ApplicationForm({
   onCancelEdit
 }) {
   const [formData, setFormData] = useState(emptyForm)
+  const [selectedFile, setSelectedFile] = useState(null)
 
   const fileInputRef = useRef(null)
   const formRef = useRef(null)
@@ -66,6 +67,8 @@ function ApplicationForm({
   function handleImageChange(event) {
     const file = event.target.files[0]
 
+    setSelectedFile(file)
+
     if (!file) {
       return
     }
@@ -83,6 +86,8 @@ function ApplicationForm({
   }
 
   function removeImage() {
+    setSelectedFile(null)
+
     setFormData((previousData) => ({
       ...previousData,
       imageUrl: ''
@@ -108,12 +113,15 @@ function ApplicationForm({
       onUpdate({
         ...editingApplication,
         ...formData
-      })
+      },
+    selectedFile
+  )
     } else {
-      onAdd(formData)
+      onAdd(formData, selectedFile)
     }
 
     setFormData(emptyForm)
+    setSelectedFile(null)
 
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
