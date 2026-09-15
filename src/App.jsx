@@ -150,7 +150,7 @@ function App() {
     }
   }
 
-  function deleteApplication(id) {
+  async function deleteApplication(id) {
     const confirmed = window.confirm(
       'Är du säker på att du vill ta bort den här jobbansökan?'
     )
@@ -159,16 +159,30 @@ function App() {
       return
     }
 
-    setApplications((previousApplications) =>
-      previousApplications.filter(
-        (application) => application.id !== id
+    try {
+      const response = await fetch(
+        `http://localhost:5250/api/JobApplications/${id}`,
+        {
+          method: 'DELETE'
+        }
       )
-    )
 
+      if (!response.ok) {
+        throw new Error('Kunde inte ta bort jobbansökan.')
+      }
+
+      setApplications((previousApplications) =>
+        previousApplications.filter(
+          (application) => application.id !== id
+        )
+      )
     if (editingApplication?.id === id) {
       setEditingApplication(null)
     }
+  } catch (error) {
+    setError('Kunde inte ta bort jobbansökan.')
   }
+}
 
   return (
     <div className="app">
