@@ -32,15 +32,36 @@ function App() {
 
   const [editingApplication, setEditingApplication] = useState(null)
 
-  function addApplication(application) {
-    const newApplication = {
-      id: Date.now(),
-      ...application
+  async function addApplication(application) {
+    try{
+      const response = await fetch(
+        'http://localhost:5250/api/JobApplications',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify ({
+            ...application,
+            dateApplied: application.dateApplied || null
+          })
+        }
+      )
+      
+      if (!response.ok) {
+        throw new Error('Kunde inte skapa jobbansökan.')
+      }
+
+      const createdApplication = await response.json()
+
+      setApplications([...applications, createdApplication])
+
+      setError('')
+    } catch (error) {
+      setError('Kunde inte lägga till jobbansökan på servern.')
     }
-
-    setApplications([...applications, newApplication])
   }
-
+  
   function updateApplication(updatedApplication) {
     setApplications(
       applications.map((application) =>
