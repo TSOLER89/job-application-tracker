@@ -47,7 +47,7 @@ function App() {
           })
         }
       )
-      
+
       if (!response.ok) {
         throw new Error('Kunde inte skapa jobbansökan.')
       }
@@ -62,18 +62,44 @@ function App() {
     }
   }
   
-  function updateApplication(updatedApplication) {
-    setApplications(
-      applications.map((application) =>
-        application.id === updatedApplication.id
-          ? updatedApplication
-          : application
-      )
-    )
+    async function updateApplication(updatedApplication) {
+      try{
+        const response = await fetch(
+          `http://localhost:5250/api/JobApplications/${updatedApplication.id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              ...updatedApplication,
+              dateApplied: updatedApplication.dateApplied || null
+            })
+          }
+        )
 
-    setEditingApplication(null)
-  }
+        if (!response.ok) {
+          throw new Error('Kunde inte uppdatera jobbansökan.')
+        }
 
+        const savedApplication = await response.json()
+
+        setApplications((previousApplications) =>
+          previousApplications.map((application) =>
+            application.id === savedApplication.id 
+              ? savedApplication
+              : application
+          )
+        )
+
+        setEditingApplication(null)
+        setError('')
+      } catch (error) {
+        setError('Kunde inte uppdatera jobbansökan på servern.')
+      }
+    }
+  
+    
   function deleteApplication(id) {
   const confirmed = window.confirm(
     'Är du säker på att du vill ta bort den här jobbansökan?'
