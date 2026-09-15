@@ -2,38 +2,33 @@ import './App.css'
 import Header from './components/Header'
 import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
-import { useState } from 'react'
+import { useEffect,useState } from 'react'
 
 function App() {
-  const [applications, setApplications] = useState([
-    {
-      id: 1,
-      company: 'Consid',
-      position: 'Junior .NET-utvecklare',
-      location: 'Linköping',
-      dateApplied: '2026-09-01',
-      status: 'Intervju',
-      notes: ''
-    },
-    {
-      id: 2,
-      company: 'Sectra',
-      position: 'Systemutvecklare',
-      location: 'Linköping',
-      dateApplied: '2026-09-09',
-      status: 'Ansökt',
-      notes: ''
-    },
-    {
-      id: 3,
-      company: 'Saab',
-      position: 'Junior Software Developer',
-      location: 'Linköping',
-      dateApplied: '',
-      status: 'Intresserad',
-      notes: ''
+  const [applications, setApplications] = useState([])
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+  async function fetchApplications() {
+    try {
+      const response = await fetch(
+        'http://localhost:5250/api/JobApplications'
+      )
+
+      if (!response.ok) {
+        throw new Error('Kunde inte hämta jobbansökningar.')
+      }
+
+      const data = await response.json()
+      setApplications(data)
+      setError('')
+    } catch (error) {
+      setError('Kunde inte hämta jobbansökningar från servern.')
     }
-  ])
+  }
+
+  fetchApplications()
+}, [])
 
   const [editingApplication, setEditingApplication] = useState(null)
 
@@ -88,13 +83,15 @@ function App() {
           onCancelEdit={() => setEditingApplication(null)}
         />
 
-        <h2>Mina jobbansökningar</h2>
+              {error && <p className="error-message">{error}</p>}
 
-        <ApplicationList
-          applications={applications}
-          onEdit={setEditingApplication}
-          onDelete={deleteApplication}
-        />
+          <h2>Mina jobbansökningar</h2>
+
+          <ApplicationList
+            applications={applications}
+            onEdit={setEditingApplication}
+            onDelete={deleteApplication}
+          />
       </main>
     </div>
   )
