@@ -1,12 +1,22 @@
 .app {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #f7faff 0%, #eef4ff 35%, #f3f6fb 100%);
+  background: radial-gradient(
+    circle at top,
+    #f7faff 0%,
+    #eef4ff 35%,
+    #f3f6fb 100%
+  );
 }
 
 /* Header */
 
 .header {
-  background: linear-gradient(135deg, #1d2a44 0%, #2f4d7f 40%, #3f7ae7 100%);
+  background: linear-gradient(
+    135deg,
+    #1d2a44 0%,
+    #2f4d7f 40%,
+    #3f7ae7 100%
+  );
   color: white;
   padding: 3rem 1rem;
   text-align: center;
@@ -26,6 +36,23 @@
   color: rgba(255, 255, 255, 0.82);
   font-size: 1rem;
 }
+
+/* Main */
+
+.main-content {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.main-content h2 {
+  color: #1f2937;
+  font-size: clamp(1.8rem, 2vw, 2.4rem);
+  margin: 0 0 1.25rem;
+}
+
+/* Applications header */
 
 .applications-header {
   display: flex;
@@ -47,7 +74,9 @@
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .add-application-button:hover {
@@ -94,7 +123,6 @@
   font-size: 0.8rem;
 }
 
-
 /* Search and filter */
 
 .application-filters {
@@ -128,32 +156,6 @@
   box-shadow: 0 0 0 3px rgba(59, 116, 239, 0.1);
 }
 
-@media (max-width: 768px) {
-  .applications-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .add-application-button {
-    width: 100%;
-  }
-}
-
-/* Main */
-
-.main-content {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 0;
-}
-
-.main-content h2 {
-  color: #1f2937;
-  font-size: clamp(1.8rem, 2vw, 2.4rem);
-  margin: 0 0 1.25rem;
-}
-
 /* Form */
 
 .application-form {
@@ -185,7 +187,7 @@
 .application-form input,
 .application-form select,
 .application-form textarea {
- width: 100%;
+  width: 100%;
   margin-top: 0.45rem;
   padding: 0.85rem 1rem;
 
@@ -196,101 +198,43 @@
   border-radius: 8px;
 
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .application-form input:focus,
 .application-form select:focus,
 .application-form textarea:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #3b74ef;
+  box-shadow: 0 0 0 3px rgba(59, 116, 239, 0.12);
 }
 
 .application-form button {
   padding: 0.8rem 1.2rem;
-  background: linear-gradient(135deg, #5a7ce8 0%, #4a69cb 100%);
+
+  background: linear-gradient(
+    135deg,
+    #5a7ce8 0%,
+    #4a69cb 100%
+  );
+
   color: white;
   border: none;
   border-radius: 10px;
+
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
   font-weight: 600;
   letter-spacing: 0.01em;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
 .application-form button:hover {
-  filter: brightness(1.02);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(74, 105, 203, 0.16);
-}
-
-/* Applications */
-
-.application-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.application-card {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  color: #0f172a;
-
-  padding: 1.75rem;
-
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 18px;
-
-  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.05);
-
-  display: flex;
-  flex-direction: column;
-
-  overflow-wrap: anywhere;
-
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-}
-
-.card-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: auto;
-  padding-top: 1rem;
-}
-
-.application-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 32px rgba(59, 130, 246, 0.1);
-}
-
-.application-card h3 {
-  margin-top: 0;
-  margin-bottom: 1.2rem;
-  color: #0f172a;
-  font-size: 1.25rem;
-}
-.card-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: auto;
-  padding-top: 1.5rem;
-}
-
-/* Buttons and Form Actions */
-.edit-button {
-  flex: 1;
-  margin-top: 0;
-  padding: 0.7rem 0.8rem;
-  background: linear-gradient(135deg, #5a7ce8 0%, #4a69cb 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  font-weight: 600;
-}
-
-.edit-button:hover {
   filter: brightness(1.02);
   transform: translateY(-1px);
   box-shadow: 0 8px 16px rgba(74, 105, 203, 0.16);
@@ -302,17 +246,82 @@
 }
 
 .application-form .cancel-button {
-  background-color: #6b7280;
+  background: #6b7280;
 }
 
-/* Status Badges */
+/* Application list */
+
+.application-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* Application card */
+
+.application-card {
+  background: #ffffff;
+  color: #0f172a;
+
+  padding: 1.5rem;
+
+  border: 1px solid #e5eaf2;
+  border-radius: 18px;
+
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-wrap: anywhere;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.application-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.09);
+}
+
+/* Card header */
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.card-company {
+  margin: 0;
+  color: #172554;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.card-position {
+  margin: 0.3rem 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* Status badges */
+
 .status-badge {
   display: inline-block;
+
   padding: 0.35rem 0.7rem;
+
   border-radius: 999px;
+
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.02em;
+
+  white-space: nowrap;
 }
 
 .status-intresserad {
@@ -339,20 +348,142 @@
   background-color: #fee2e2;
   color: #991b1b;
 }
-.company-badge {
-  display: inline-block;
-  padding: 0.35rem 0.75rem;
 
-  background-color: #dbeafe;
-  color: #1e3a8a;
+/* Application image */
 
-  border-radius: 999px;
+.application-image {
+  width: 100%;
+  height: 180px;
 
-  font-size: 1rem;
-  font-weight: 700;
+  object-fit: cover;
+
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+
+  border: 1px solid #eef2f7;
 }
 
-/* Image Preview */
+/* Card details */
+
+.card-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  padding: 1rem 0;
+
+  border-top: 1px solid #eef2f7;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.card-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-label {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card-detail span:last-child {
+  color: #334155;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Notes */
+
+.card-notes {
+  margin-top: 1rem;
+}
+
+.card-notes p {
+  margin: 0.4rem 0 0;
+
+  color: #475569;
+
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+/* Card buttons */
+
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.card-actions .edit-button,
+.card-actions .delete-button {
+  flex: 1;
+}
+
+.edit-button {
+  padding: 0.7rem 0.8rem;
+
+  background: linear-gradient(
+    135deg,
+    #5a7ce8 0%,
+    #4a69cb 100%
+  );
+
+  color: white;
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+  font-weight: 600;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.edit-button:hover {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(74, 105, 203, 0.16);
+}
+
+.delete-button {
+  padding: 0.7rem 0.8rem;
+
+  background: linear-gradient(
+    135deg,
+    #f07f74 0%,
+    #e85d54 100%
+  );
+
+  color: white;
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+  font-weight: 600;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.delete-button:hover {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(232, 93, 84, 0.16);
+}
+
+/* Image preview in form */
 
 .image-preview-container {
   margin-bottom: 1rem;
@@ -370,20 +501,25 @@
 
 .image-preview {
   display: block;
+
   width: 120px;
   height: 120px;
+
   object-fit: cover;
+
   border-radius: 8px;
   border: 1px solid #d1d5db;
 }
 
 .application-form .remove-image-button {
   position: absolute;
+
   top: 6px;
   right: 6px;
 
   width: 28px;
   height: 28px;
+
   padding: 0;
 
   display: flex;
@@ -398,6 +534,7 @@
 
   font-size: 20px;
   line-height: 1;
+
   cursor: pointer;
 }
 
@@ -405,68 +542,36 @@
   background-color: #de4242;
 }
 
-.application-image {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+/* Empty state */
+
+.empty-state {
+  background: #ffffff;
+
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+
+  padding: 2rem;
+
+  text-align: center;
+  color: #64748b;
 }
 
-.application-card {
-  overflow-wrap: anywhere;
+.empty-state h3 {
+  margin: 0 0 0.5rem;
+  color: #1f2937;
 }
 
-.application-form input,
-.application-form select,
-.application-form textarea {
-  width: 100%;
+.empty-state p {
+  margin: 0;
 }
 
-/* Card Actions */
-.card-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.card-actions .edit-button,
-.card-actions .delete-button {
-  flex: 1;
-}
-
-/* Delete Button */
-.delete-button {
-  flex: 1;
-  padding: 0.7rem 0.8rem;
-  background: linear-gradient(135deg, #f07f74 0%, #e85d54 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  font-weight: 600;
-}
-
-.delete-button:hover {
-  filter: brightness(1.02);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(232, 93, 84, 0.16);
-}
-
-
-
-
-
-
-/* Mobile */
 /* Mobile */
 
 @media (max-width: 768px) {
   .main-content {
     width: 100%;
     max-width: none;
+
     padding: 1.5rem 1rem 2rem;
   }
 
@@ -484,11 +589,12 @@
     font-size: 0.9rem;
   }
 
-  /* Statistik */
+  /* Statistics */
 
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
+
     margin-bottom: 2rem;
   }
 
@@ -509,12 +615,14 @@
     font-size: 0.72rem;
   }
 
-  /* Rubrik + Lägg till */
+  /* Applications header */
 
   .applications-header {
     flex-direction: column;
     align-items: stretch;
+
     gap: 1rem;
+
     margin-bottom: 1.25rem;
   }
 
@@ -527,7 +635,7 @@
     padding: 0.9rem 1rem;
   }
 
-  /* Sök och filter */
+  /* Search and filter */
 
   .application-filters {
     flex-direction: column;
@@ -543,13 +651,15 @@
     min-width: 0;
   }
 
-  /* Formulär */
+  /* Form */
 
   .application-form {
     width: 100%;
     max-width: none;
+
     padding: 1.25rem;
     margin-bottom: 2rem;
+
     border-radius: 14px;
   }
 
@@ -561,7 +671,7 @@
     width: 100%;
   }
 
-  /* Jobbkort */
+  /* Application cards */
 
   .application-list {
     grid-template-columns: 1fr;
@@ -570,14 +680,32 @@
 
   .application-card {
     width: 100%;
+
     padding: 1.25rem;
+
     border-radius: 14px;
+  }
+
+  .card-header {
+    gap: 0.75rem;
+  }
+
+  .card-company {
+    font-size: 1.2rem;
+  }
+
+  .card-position {
+    font-size: 0.9rem;
   }
 
   .application-image {
     width: 100%;
     height: 170px;
-    object-fit: cover;
+  }
+
+  .card-details {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 
   .card-actions {
