@@ -5,8 +5,15 @@ import ApplicationForm from './components/ApplicationForm'
 import ApplicationStats from './components/ApplicationStats'
 import ApplicationFilters from './components/ApplicationFilters'
 
-import { useEffect, useState } from 'react'
+import {
+  getApplications,
+  createApplication,
+  updateApplication as updateApplicationRequest,
+  deleteApplication as deleteApplicationRequest,
+  uploadImage
+} from './services/applicationService'
 
+import { useEffect, useState } from 'react'
 
 function App() {
   const [applications, setApplications] = useState([])
@@ -15,20 +22,12 @@ function App() {
   const [showForm, setShowForm] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('Alla')
- 
 
+  // Ladda alla jobbansökningar när komponenten mountas
   useEffect(() => {
-    async function fetchApplications() {
+    async function loadApplications() {
       try {
-        const response = await fetch(
-          'http://localhost:5250/api/JobApplications'
-        )
-
-        if (!response.ok) {
-          throw new Error('Kunde inte hämta jobbansökningar.')
-        }
-
-        const data = await response.json()
+        const data = await getApplications()
 
         setApplications(data)
         setError('')
@@ -37,7 +36,7 @@ function App() {
       }
     }
 
-    fetchApplications()
+    loadApplications()
   }, [])
 
   async function addApplication(application, selectedFile) {
@@ -45,46 +44,14 @@ function App() {
       let imageUrl = ''
 
       if (selectedFile) {
-        const formData = new FormData()
-        formData.append('file', selectedFile)
-
-        const uploadResponse = await fetch(
-          'http://localhost:5250/api/JobApplications/upload',
-          {
-            method: 'POST',
-            body: formData
-          }
-        )
-
-        if (!uploadResponse.ok) {
-          throw new Error('Kunde inte ladda upp bilden.')
-        }
-
-        const uploadData = await uploadResponse.json()
-
-        imageUrl = `http://localhost:5250${uploadData.imageUrl}`
+        imageUrl = await uploadImage(selectedFile)
       }
 
-      const response = await fetch(
-        'http://localhost:5250/api/JobApplications',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            ...application,
-            imageUrl,
-            dateApplied: application.dateApplied || null
-          })
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error('Kunde inte skapa jobbansökan.')
-      }
-
-      const createdApplication = await response.json()
+      const createdApplication = await createApplication({
+        ...application,
+        imageUrl,
+        dateApplied: application.dateApplied || null
+      })
 
       setApplications((previousApplications) => [
         ...previousApplications,
@@ -103,46 +70,17 @@ function App() {
       let imageUrl = updatedApplication.imageUrl
 
       if (selectedFile) {
-        const formData = new FormData()
-        formData.append('file', selectedFile)
-
-        const uploadResponse = await fetch(
-          'http://localhost:5250/api/JobApplications/upload',
-          {
-            method: 'POST',
-            body: formData
-          }
-        )
-
-        if (!uploadResponse.ok) {
-          throw new Error('Kunde inte ladda upp bilden.')
-        }
-
-        const uploadData = await uploadResponse.json()
-
-        imageUrl = `http://localhost:5250${uploadData.imageUrl}`
+        imageUrl = await uploadImage(selectedFile)
       }
 
-      const response = await fetch(
-        `http://localhost:5250/api/JobApplications/${updatedApplication.id}`,
+      const savedApplication = await updateApplicationRequest(
+        updatedApplication.id,
         {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            ...updatedApplication,
-            imageUrl,
-            dateApplied: updatedApplication.dateApplied || null
-          })
+          ...updatedApplication,
+          imageUrl,
+          dateApplied: updatedApplication.dateApplied || null
         }
       )
-
-      if (!response.ok) {
-        throw new Error('Kunde inte uppdatera jobbansökan.')
-      }
-
-      const savedApplication = await response.json()
 
       setApplications((previousApplications) =>
         previousApplications.map((application) =>
@@ -170,16 +108,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:5250/api/JobApplications/${id}`,
-        {
-          method: 'DELETE'
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error('Kunde inte ta bort jobbansökan.')
-      }
+      await deleteApplicationRequest(id)
 
       setApplications((previousApplications) =>
         previousApplications.filter(
@@ -198,26 +127,25 @@ function App() {
     }
   }
 
-      const filteredApplications = applications.filter((application) => {
-        const search = searchTerm.toLowerCase()
+  const filteredApplications = applications.filter((application) => {
+    const search = searchTerm.toLowerCase()
 
-        const matchesSearch =
-        application.company.toLowerCase().includes(search) ||
-        application.position.toLowerCase().includes(search) ||
-        application.location.toLowerCase().includes(search)
+    const matchesSearch =
+      application.company.toLowerCase().includes(search) ||
+      application.position.toLowerCase().includes(search) ||
+      application.location.toLowerCase().includes(search)
 
-        const matchesStatus = 
-        statusFilter === 'Alla' || 
-        application.status === statusFilter
+    const matchesStatus =
+      statusFilter === 'Alla' ||
+      application.status === statusFilter
 
-        return matchesSearch && matchesStatus
+    return matchesSearch && matchesStatus
+  })
 
-      })
-
+  // Ladda alla jobbansökningar när komponenten mountas
   return (
     <div className="app">
       <Header />
-
 
       <main className="main-content">
         <ApplicationStats applications={applications} />
@@ -255,7 +183,7 @@ function App() {
           </p>
         )}
 
-         <ApplicationFilters
+        <ApplicationFilters
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           statusFilter={statusFilter}
