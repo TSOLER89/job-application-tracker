@@ -2,7 +2,9 @@ import './App.css'
 import Header from './components/Header'
 import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
+import ApplicationStats from './components/ApplicationStats'
 import { useEffect, useState } from 'react'
+
 
 function App() {
   const [applications, setApplications] = useState([])
@@ -195,7 +197,10 @@ function App() {
     <div className="app">
       <Header />
 
+
       <main className="main-content">
+        <ApplicationStats applications={applications} />
+
         <div className="applications-header">
           <h2>Mina jobbansökningar</h2>
 
