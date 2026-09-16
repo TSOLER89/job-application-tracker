@@ -3,6 +3,8 @@ import Header from './components/Header'
 import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
 import ApplicationStats from './components/ApplicationStats'
+import ApplicationFilters from './components/ApplicationFilters'
+
 import { useEffect, useState } from 'react'
 
 
@@ -11,6 +13,9 @@ function App() {
   const [error, setError] = useState('')
   const [editingApplication, setEditingApplication] = useState(null)
   const [showForm, setShowForm] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('Alla')
+ 
 
   useEffect(() => {
     async function fetchApplications() {
@@ -193,6 +198,22 @@ function App() {
     }
   }
 
+      const filteredApplications = applications.filter((application) => {
+        const search = searchTerm.toLowerCase()
+
+        const matchesSearch =
+        application.company.toLowerCase().includes(search) ||
+        application.position.toLowerCase().includes(search) ||
+        application.location.toLowerCase().includes(search)
+
+        const matchesStatus = 
+        statusFilter === 'Alla' || 
+        application.status === statusFilter
+
+        return matchesSearch && matchesStatus
+
+      })
+
   return (
     <div className="app">
       <Header />
@@ -234,8 +255,16 @@ function App() {
           </p>
         )}
 
+         <ApplicationFilters
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          statusFilter={statusFilter}
+          onStatusChange={setStatusFilter}
+        />
+
         <ApplicationList
-          applications={applications}
+          applications={filteredApplications}
+          hasApplications={applications.length > 0}
           onEdit={(application) => {
             setEditingApplication(application)
             setShowForm(true)

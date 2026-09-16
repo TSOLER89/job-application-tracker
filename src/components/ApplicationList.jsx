@@ -1,17 +1,30 @@
 import ApplicationCard from './ApplicationCard'
 
-function ApplicationList({ applications, 
+function ApplicationList({ 
+  applications, 
   onEdit,
-  onDelete
+  onDelete,
+  hasApplications
 }) {
   if (applications.length === 0) {
       return (
       <div className="empty-state">
-        <h3>Inga jobbansökningar ännu</h3>
-        <p>Lägg till din första jobbansökan ovan.</p>
-      </div>
-    )
-  }
+        {
+          hasApplications ? (
+            <>
+            <h3>Inga träffar</h3>
+            <p>Det finns inga jobbansökningar som matchar ditt filter.</p>
+            </>
+          ) : (
+            <>
+            <h3>Inga jobbansökningar ännu</h3>
+            <p>Lägg till din första jobbansökan ovan.</p>
+            </>
+          )}
+        </div>
+      )
+    }
+
 
   return ( /*.map()ta varje ansökan och rendera en ApplicationCard */
     <div className="application-list">
