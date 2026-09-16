@@ -8,6 +8,7 @@ function App() {
   const [applications, setApplications] = useState([])
   const [error, setError] = useState('')
   const [editingApplication, setEditingApplication] = useState(null)
+  const [showForm, setShowForm] = useState(false)
 
   useEffect(() => {
     async function fetchApplications() {
@@ -83,6 +84,7 @@ function App() {
         createdApplication
       ])
 
+      setShowForm(false)
       setError('')
     } catch (error) {
       setError('Kunde inte spara jobbansökan eller bilden.')
@@ -144,6 +146,7 @@ function App() {
       )
 
       setEditingApplication(null)
+      setShowForm(false)
       setError('')
     } catch (error) {
       setError('Kunde inte uppdatera jobbansökan eller bilden.')
@@ -176,25 +179,49 @@ function App() {
           (application) => application.id !== id
         )
       )
-    if (editingApplication?.id === id) {
-      setEditingApplication(null)
+
+      if (editingApplication?.id === id) {
+        setEditingApplication(null)
+        setShowForm(false)
+      }
+
+      setError('')
+    } catch (error) {
+      setError('Kunde inte ta bort jobbansökan.')
     }
-  } catch (error) {
-    setError('Kunde inte ta bort jobbansökan.')
   }
-}
 
   return (
     <div className="app">
       <Header />
 
       <main className="main-content">
-        <ApplicationForm
-          onAdd={addApplication}
-          onUpdate={updateApplication}
-          editingApplication={editingApplication}
-          onCancelEdit={() => setEditingApplication(null)}
-        />
+        <div className="applications-header">
+          <h2>Mina jobbansökningar</h2>
+
+          <button
+            type="button"
+            className="add-application-button"
+            onClick={() => {
+              setEditingApplication(null)
+              setShowForm(true)
+            }}
+          >
+            + Lägg till ansökan
+          </button>
+        </div>
+
+        {showForm && (
+          <ApplicationForm
+            onAdd={addApplication}
+            onUpdate={updateApplication}
+            editingApplication={editingApplication}
+            onCancelEdit={() => {
+              setEditingApplication(null)
+              setShowForm(false)
+            }}
+          />
+        )}
 
         {error && (
           <p className="error-message">
@@ -202,11 +229,12 @@ function App() {
           </p>
         )}
 
-        <h2>Mina jobbansökningar</h2>
-
         <ApplicationList
           applications={applications}
-          onEdit={setEditingApplication}
+          onEdit={(application) => {
+            setEditingApplication(application)
+            setShowForm(true)
+          }}
           onDelete={deleteApplication}
         />
       </main>

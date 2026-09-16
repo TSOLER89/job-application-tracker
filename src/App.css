@@ -26,6 +26,46 @@
   color: rgba(255, 255, 255, 0.82);
   font-size: 1rem;
 }
+
+.applications-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.applications-header h2 {
+  margin: 0;
+}
+
+.add-application-button {
+  padding: 0.8rem 1.2rem;
+  background: #3b74ef;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-application-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(59, 116, 239, 0.2);
+}
+
+@media (max-width: 768px) {
+  .applications-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-application-button {
+    width: 100%;
+  }
+}
+
 /* Main */
 
 .main-content {

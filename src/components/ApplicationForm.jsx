@@ -254,7 +254,7 @@ function ApplicationForm({
             : 'Spara ansökan'}
         </button>
 
-        {editingApplication && (
+    
           <button
             type="button"
             className="cancel-button"
@@ -262,7 +262,7 @@ function ApplicationForm({
           >
             Avbryt
           </button>
-        )}
+
       </div>
     </form>
   )
