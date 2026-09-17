@@ -25,8 +25,8 @@ function ApplicationList({
       )
     }
 
-
-  return ( /*.map()ta varje ansökan och rendera en ApplicationCard */
+  // Rendera listan med jobbansökningar om det finns några.
+  return ( 
     <div className="application-list">
       {applications.map((application) => (
         <ApplicationCard

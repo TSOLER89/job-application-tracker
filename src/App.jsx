@@ -142,7 +142,7 @@ function App() {
     return matchesSearch && matchesStatus
   })
 
-  // Ladda alla jobbansökningar när komponenten mountas
+  
   return (
     <div className="app">
       <Header />
