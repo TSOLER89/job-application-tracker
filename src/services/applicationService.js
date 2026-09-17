@@ -1,8 +1,9 @@
-//basadress URL backend-servern
-const API_URL = 'http://localhost:5250/api/JobApplications'
+//Backend-serverns address hämtas från miljövariabeln .env
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-//Gemensam URL för JobApplications-endpointen
-const BASE_URL = 'http://localhost:5250' 
+// Gemensam endpoint för jobbansökningar
+const API_URL = `${BASE_URL}/api/JobApplications`
+
 
 // Hämtar alla jobbansökningar från API:t
 export async function getApplications() {
@@ -14,6 +15,7 @@ export async function getApplications() {
 
   return response.json()
 }
+
 // Skapar en ny jobbansökan
 export async function createApplication(application) {
   const response = await fetch(API_URL, {
@@ -76,8 +78,5 @@ export async function uploadImage(file) {
 
   const data = await response.json()
 
-
-  // Backend returnerar t.ex. /uploads/bild.jpg.
-  // BASE_URL läggs till så att React får hela bildadressen.
-  return `${BASE_URL}${data.imageUrl}`
+return data.imageUrl
 }

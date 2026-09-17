@@ -1,3 +1,5 @@
+import { getImageUrl } from '../utils/imageUrl'
+
 function ApplicationCard({
   company,
   position,
@@ -26,7 +28,7 @@ function ApplicationCard({
 
       {imageUrl && (
         <img
-          src={imageUrl}
+          src={getImageUrl(imageUrl)}
           alt={`Bild för ${company}`}
           className="application-image"
         />

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getImageUrl } from '../utils/imageUrl'
 
 const emptyForm = {
   company: '',
@@ -230,7 +231,7 @@ function ApplicationForm({
 
           <div className="image-preview-wrapper">
             <img
-              src={formData.imageUrl}
+              src={getImageUrl(formData.imageUrl)}
               alt="Förhandsvisning"
               className="image-preview"
             />
