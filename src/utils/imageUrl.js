@@ -6,11 +6,11 @@ export function getImageUrl(imageUrl)  {
  }
  
  // Om bilden redan är en data-URL, returnera den som den är.
- if (imageUrl.startsWith('data')) {
+ if (imageUrl.startsWith('data:')) {
    return imageUrl
  }
 
- //stöd för damla poster som redan har fullständig URL i databas
+ //stöd för gamla poster som redan har fullständig URL i databas
  if (
     imageUrl.startsWith('http://') ||
     imageUrl.startsWith('https://')
