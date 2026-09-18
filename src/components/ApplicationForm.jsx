@@ -11,13 +11,31 @@ const emptyForm = {
   imageUrl: ''
 }
 
+function getInitialFormData(editingApplication) {
+  if (!editingApplication) {
+    return emptyForm
+  }
+
+  return {
+    company: editingApplication.company,
+    position: editingApplication.position,
+    location: editingApplication.location,
+    dateApplied: editingApplication.dateApplied || '',
+    status: editingApplication.status,
+    notes: editingApplication.notes || '',
+    imageUrl: editingApplication.imageUrl || ''
+  }
+}
+
 function ApplicationForm({
   onAdd,
   onUpdate,
   editingApplication,
   onCancelEdit
 }) {
-  const [formData, setFormData] = useState(emptyForm)
+  const [formData, setFormData] = useState(() =>
+    getInitialFormData(editingApplication)
+  )
   const [selectedFile, setSelectedFile] = useState(null)
 
   const fileInputRef = useRef(null)
@@ -25,27 +43,10 @@ function ApplicationForm({
 
   useEffect(() => {
     if (editingApplication) {
-      setFormData({
-        company: editingApplication.company,
-        position: editingApplication.position,
-        location: editingApplication.location,
-        dateApplied: editingApplication.dateApplied || '',
-        status: editingApplication.status,
-        notes: editingApplication.notes || '',
-        imageUrl: editingApplication.imageUrl || ''
-      })
-
       formRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       })
-    } else {
-      setFormData(emptyForm)
-    }
-    setSelectedFile(null)
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
     }
   }, [editingApplication])
 

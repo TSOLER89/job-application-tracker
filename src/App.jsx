@@ -31,7 +31,7 @@ function App() {
 
         setApplications(data)
         setError('')
-      } catch (error) {
+      } catch {
         setError('Kunde inte hämta jobbansökningar från servern.')
       }
     }
@@ -60,7 +60,7 @@ function App() {
 
       setShowForm(false)
       setError('')
-    } catch (error) {
+    } catch {
       setError('Kunde inte spara jobbansökan eller bilden.')
     }
   }
@@ -93,7 +93,7 @@ function App() {
       setEditingApplication(null)
       setShowForm(false)
       setError('')
-    } catch (error) {
+    } catch {
       setError('Kunde inte uppdatera jobbansökan eller bilden.')
     }
   }
@@ -122,7 +122,7 @@ function App() {
       }
 
       setError('')
-    } catch (error) {
+    } catch {
       setError('Kunde inte ta bort jobbansökan.')
     }
   }
@@ -167,6 +167,7 @@ function App() {
 
         {showForm && (
           <ApplicationForm
+            key={editingApplication?.id ?? 'new-application'}
             onAdd={addApplication}
             onUpdate={updateApplication}
             editingApplication={editingApplication}
