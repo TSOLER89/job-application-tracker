@@ -1,262 +1,161 @@
-# JobTrack – Job Application Tracker
+JobTrack – Frontend
 
-JobTrack är en responsiv webbapplikation för att hålla koll på jobbansökningar.
+This repository contains the frontend web application for JobTrack, a project for the course Web Applications and Mobile Development.
 
-Applikationen är byggd som ett individuellt projekt i kursen **Webbapplikationer och mobil utveckling**.
+The web application is built with React and Vite and communicates with a separate ASP.NET Core Web API to read and save job applications.
 
-Frontend är byggd med React och kommunicerar med ett eget ASP.NET Core Web API. Data sparas i SQL Server med Entity Framework Core.
+Features
 
-## Funktioner
+View all job applications
 
-- Visa alla jobbansökningar
-- Skapa en ny jobbansökan
-- Redigera en befintlig jobbansökan
-- Ta bort en jobbansökan
-- Ladda upp och visa bilder
-- Söka efter företag, tjänst eller plats
-- Filtrera ansökningar efter status
-- Visa statistik över ansökningar
-- Felmeddelanden om API-anrop misslyckas
-- Responsiv design för desktop och mobil
+Create a new job application
 
-## Statusar
+Edit an existing job application
 
-En jobbansökan kan ha någon av följande statusar:
+Delete a job application
 
-- Ansökt
-- Intresserad
-- Intervju
-- Erbjudande
-- Avslag
+Upload and display an image
 
-## Teknik
+Search by company, position, or location
 
-### Frontend
+Filter applications by status
 
-- React
-- JavaScript
-- Vite
-- CSS
-- Fetch API
+View application statistics
 
-### Backend
+Show error messages if an API request fails
 
-- ASP.NET Core Web API
-- C#
-- Entity Framework Core
-- SQL Server LocalDB
-- Swagger
+Responsive layout for desktop and mobile
 
-## Repository
+Technologies
 
-Frontend:
+React
 
-https://github.com/TSOLER89/job-application-tracker
+JavaScript
 
-Backend:
+Vite
+
+CSS
+
+Fetch API
+
+Backend
+
+This frontend uses the following backend repository:
 
 https://github.com/TSOLER89/job-application-tracker-api
 
-## Förutsättningar
+The backend must be running before the web application can fetch or save data.
 
-För att köra hela applikationen lokalt behövs:
+Requirements
 
-- Node.js och npm
-- .NET 10 SDK
-- SQL Server LocalDB
-- Git
+To run the frontend locally, you need:
 
-Frontend körs på:
+Node.js
 
-```text
-http://localhost:5173
-```
+npm
 
-Backend körs på:
+Git
 
-```text
-http://localhost:5250
-```
+Installation and Running the Project
 
-## 1. Klona backend
+Clone the repository:
 
-```bash
-git clone https://github.com/TSOLER89/job-application-tracker-api.git
-cd job-application-tracker-api
-```
-
-Installera beroenden:
-
-```bash
-dotnet restore
-```
-
-Skapa/uppdatera databasen med Entity Framework-migrationen:
-
-```bash
-dotnet ef database update
-```
-
-Om kommandot `dotnet ef` inte finns kan Entity Framework CLI installeras med:
-
-```bash
-dotnet tool install --global dotnet-ef
-```
-
-Starta API:t:
-
-```bash
-dotnet run
-```
-
-Backend ska nu vara tillgänglig på:
-
-```text
-http://localhost:5250
-```
-
-Swagger finns på:
-
-```text
-http://localhost:5250/swagger
-```
-
-## 2. Klona frontend
-
-Öppna en ny terminal.
-
-```bash
 git clone https://github.com/TSOLER89/job-application-tracker.git
 cd job-application-tracker
-```
 
-Installera npm-paketen:
+Install dependencies:
 
-```bash
 npm install
-```
 
-Starta frontend:
+Make sure the backend is running on:
 
-```bash
-npm run dev
-```
+http://localhost:5250
 
-Öppna sedan:
+The project .env file contains:
 
-```text
-http://localhost:5173
-```
-
-## API-konfiguration
-
-Frontend använder miljövariabeln:
-
-```env
 VITE_API_BASE_URL=http://localhost:5250
-```
 
-Den finns i projektets `.env`-fil och används för kommunikationen med backend.
+Start the frontend:
 
-## API-endpoints
+npm run dev
 
-| Method | Endpoint                           | Funktion                    |
-| ------ | ---------------------------------- | --------------------------- |
-| GET    | `/api/JobApplications`             | Hämtar alla jobbansökningar |
-| POST   | `/api/JobApplications`             | Skapar en jobbansökan       |
-| PUT    | `/api/JobApplications/{id}`        | Uppdaterar en jobbansökan   |
-| DELETE | `/api/JobApplications/{id}`        | Tar bort en jobbansökan     |
-| POST   | `/api/JobApplications/uploadimage` | Laddar upp en bild          |
+Then open:
 
-## Tekniska val
-
-### React och komponenter
-
-Frontend är uppdelad i flera komponenter, till exempel formulär, lista, kort, statistik och filter. Det gör koden mer strukturerad och komponenterna enklare att underhålla.
-
-### Separat API-service
-
-Alla HTTP-anrop är samlade i `applicationService.js` istället för att ligga direkt i `App.jsx`.
-
-Det gör att komponenterna kan fokusera på UI och state medan kommunikationen med backend hålls separat.
-
-### ASP.NET Core Web API
-
-Backend är byggd med ASP.NET Core eftersom projektet behöver ett eget API för att hantera jobbansökningarna.
-
-API:t använder separata endpoints för GET, POST, PUT och DELETE.
-
-### Entity Framework Core och SQL Server
-
-Entity Framework Core används tillsammans med SQL Server LocalDB för att spara jobbansökningarna.
-
-Det innebär att informationen finns kvar även när backend startas om.
-
-### Bilduppladdning
-
-Bilder laddas upp till backend och sparas i `wwwroot/uploads`.
-
-Databasen lagrar sökvägen till bilden istället för själva bildfilen.
-
-### CORS
-
-Backend tillåter anrop från React-applikationen på:
-
-```text
 http://localhost:5173
-```
 
-Det gör att frontend och backend kan kommunicera trots att de körs på olika portar.
+Vite is configured to use port 5173.
 
-### Responsiv design
+Project Structure
 
-CSS använder media queries för att anpassa layouten till olika skärmstorlekar.
-
-På större skärmar visas jobbansökningarna i flera kolumner medan mobilversionen använder en kolumn och anpassade kontroller.
-
-## Projektstruktur
-
-```text
 src/
 ├── components/
-│   ├── ApplicationCard.jsx
-│   ├── ApplicationFilters.jsx
-│   ├── ApplicationForm.jsx
-│   ├── ApplicationList.jsx
-│   ├── ApplicationStats.jsx
-│   └── Header.jsx
+│ ├── ApplicationCard.jsx
+│ ├── ApplicationFilters.jsx
+│ ├── ApplicationForm.jsx
+│ ├── ApplicationList.jsx
+│ ├── ApplicationStats.jsx
+│ └── Header.jsx
 │
 ├── services/
-│   └── applicationService.js
+│ └── applicationService.js
 │
 ├── utils/
-│   └── imageUrl.js
+│ └── imageUrl.js
 │
 ├── App.jsx
 ├── App.css
 ├── index.css
 └── main.jsx
-```
 
-## Felhantering
+Technical Choices
 
-API-anrop ligger i `try/catch`.
+Component-Based React Structure
 
-Om ett API-anrop misslyckas visas ett felmeddelande i gränssnittet istället för att applikationen kraschar.
+The interface is divided into smaller components for the form, application list, application cards, filters, and statistics.
 
-## Databas
+This makes the code easier to read, maintain, and develop step by step.
 
-Databasen skapas lokalt som:
+Separate API Service
 
-```text
-JobTrackDb
-```
+All HTTP requests are handled in applicationService.js instead of directly inside the React components.
 
-Connection string finns i backendprojektets `appsettings.json`.
+This separates API communication from the UI and state management.
 
-## Utvecklare
+Environment Variable for the API Address
+
+The backend address is loaded from .env using:
+
+VITE_API_BASE_URL
+
+This avoids repeating the backend URL in several files.
+
+Responsive Design
+
+CSS media queries are used to adapt the layout to different screen sizes.
+
+On larger screens, job applications are displayed in multiple columns. On smaller mobile screens, the layout changes to one column with mobile-friendly controls.
+
+Error Handling and User Feedback
+
+API requests are handled with try/catch.
+
+If an API request fails, an error message is shown in the interface instead of the application crashing.
+
+The user is also asked to confirm before deleting a job application.
+
+Reflection
+
+I chose to divide the frontend into clear React components and keep the API requests in a separate service file.
+
+This made it easier to work on each part of the application separately and made the code easier to understand.
+
+Related Repository
+
+Backend:
+
+https://github.com/TSOLER89/job-application-tracker-api
+
+Developer
 
 Tsoler Hayitian
-20-09-2026
-Systemutvecklare .NET  
-TUC Yrkeshögskola
+.NET System Developer student
