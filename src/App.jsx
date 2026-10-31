@@ -13,11 +13,16 @@ import {
   uploadImage
 } from './services/applicationService'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 function App() {
   const [applications, setApplications] = useState([])
   const [error, setError] = useState('')
+  const [loadError, setLoadError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasLoaded, setHasLoaded] = useState(false)
+  const [reloadToken, setReloadToken] = useState(0)
   const [editingApplication, setEditingApplication] = useState(null)
   const [showForm, setShowForm] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -26,37 +31,48 @@ function App() {
   const savingRef = useRef(false)
   const requestVersionRef = useRef(0)
 
-  // Ladda alla jobbansökningar när komponenten mountas
+  const loadApplications = useCallback(() => {
+    if (savingRef.current) return
+    setIsLoading(true)
+    setLoadError('')
+    setReloadToken(value => value + 1)
+  }, [])
+
   useEffect(() => {
     let active = true
-    async function loadApplications() {
-      if (savingRef.current) return
+    async function load() {
       const requestVersion = ++requestVersionRef.current
       try {
         const data = await getApplications()
         if (!active || requestVersion !== requestVersionRef.current) return
         setApplications(data)
-        setError('')
+        setHasLoaded(true)
       } catch {
         if (!active || requestVersion !== requestVersionRef.current) return
-        setError('Kunde inte hämta jobbansökningar från servern.')
+        setLoadError('Kunde inte hämta dina ansökningar. Kontrollera anslutningen och försök igen.')
+      } finally {
+        if (active && requestVersion === requestVersionRef.current) setIsLoading(false)
       }
     }
+    load()
+    return () => { active = false }
+  }, [reloadToken])
 
-    loadApplications()
+  useEffect(() => {
     window.addEventListener('focus', loadApplications)
     return () => {
-      active = false
       window.removeEventListener('focus', loadApplications)
     }
-  }, [])
+  }, [loadApplications])
 
   async function addApplication(application, selectedFile) {
     if (savingRef.current) return
     savingRef.current = true
     requestVersionRef.current++
+    setIsLoading(false)
     setIsSaving(true)
     setError('')
+    setSuccess('')
     try {
       let imageUrl = ''
 
@@ -77,8 +93,9 @@ function App() {
 
       setShowForm(false)
       setError('')
-    } catch {
-      setError('Kunde inte spara jobbansökan eller bilden.')
+      setSuccess('Jobbansökan har lagts till.')
+    } catch (error) {
+      setError(error.message || 'Kunde inte spara jobbansökan eller bilden.')
     } finally {
       savingRef.current = false
       setIsSaving(false)
@@ -89,8 +106,10 @@ function App() {
     if (savingRef.current) return
     savingRef.current = true
     requestVersionRef.current++
+    setIsLoading(false)
     setIsSaving(true)
     setError('')
+    setSuccess('')
     try {
       let imageUrl = updatedApplication.imageUrl
 
@@ -118,8 +137,9 @@ function App() {
       setEditingApplication(null)
       setShowForm(false)
       setError('')
-    } catch {
-      setError('Kunde inte uppdatera jobbansökan eller bilden.')
+      setSuccess('Ändringarna har sparats.')
+    } catch (error) {
+      setError(error.message || 'Kunde inte uppdatera jobbansökan eller bilden.')
     } finally {
       savingRef.current = false
       setIsSaving(false)
@@ -137,6 +157,11 @@ function App() {
     }
 
     requestVersionRef.current++
+    savingRef.current = true
+    setIsLoading(false)
+    setIsSaving(true)
+    setError('')
+    setSuccess('')
 
     try {
       await deleteApplicationRequest(id)
@@ -153,13 +178,17 @@ function App() {
       }
 
       setError('')
+      setSuccess('Jobbansökan har tagits bort.')
     } catch {
       setError('Kunde inte ta bort jobbansökan.')
+    } finally {
+      savingRef.current = false
+      setIsSaving(false)
     }
   }
 
   const filteredApplications = applications.filter((application) => {
-    const search = searchTerm.toLowerCase()
+    const search = searchTerm.trim().toLowerCase()
 
     const matchesSearch =
       application.company.toLowerCase().includes(search) ||
@@ -176,21 +205,43 @@ function App() {
   
   return (
     <div className="app">
+      <a className="skip-link" href="#main-content">Hoppa till innehållet</a>
       <Header />
 
-      <main className="main-content">
-        <ApplicationStats applications={applications} />
+      <main className="main-content" id="main-content">
+        <ApplicationStats applications={applications} loading={!hasLoaded} />
+
+        <div aria-live="polite" aria-atomic="true">
+          {success && (
+            <div className="feedback feedback-success" role="status">
+              <span>{success}</span>
+              <button type="button" onClick={() => setSuccess('')} aria-label="Stäng bekräftelse">×</button>
+            </div>
+          )}
+        </div>
+        {loadError && (
+          <div className="feedback feedback-error" role="alert">
+            <span>{loadError}{hasLoaded && ' Senast hämtade uppgifter visas.'}</span>
+            <button type="button" onClick={loadApplications} disabled={isLoading || isSaving}>Försök igen</button>
+          </div>
+        )}
+        {error && <p className="feedback feedback-error" role="alert">{error} Dina övriga uppgifter finns kvar.</p>}
 
         <div className="applications-header">
-          <h2>Mina jobbansökningar</h2>
+          <div>
+            <p className="section-eyebrow">DIN ÖVERSIKT</p>
+            <h2>Mina jobbansökningar</h2>
+          </div>
 
           <button
             type="button"
             className="add-application-button"
-            disabled={isSaving}
+            disabled={isSaving || !hasLoaded}
             onClick={() => {
               setEditingApplication(null)
               setShowForm(true)
+              setError('')
+              setSuccess('')
             }}
           >
             + Lägg till ansökan
@@ -207,14 +258,9 @@ function App() {
             onCancelEdit={() => {
               setEditingApplication(null)
               setShowForm(false)
+              setError('')
             }}
           />
-        )}
-
-        {error && (
-          <p className="error-message" role="alert">
-            {error}
-          </p>
         )}
 
         <ApplicationFilters
@@ -222,19 +268,27 @@ function App() {
           onSearchChange={setSearchTerm}
           statusFilter={statusFilter}
           onStatusChange={setStatusFilter}
+          disabled={!hasLoaded}
         />
 
+        {isLoading && <p className="loading-state" role="status"><span className="loading-dot" aria-hidden="true" />{hasLoaded ? 'Uppdaterar ansökningar…' : 'Laddar dina ansökningar…'}</p>}
+        {hasLoaded && <p className="results-count" aria-live="polite">Visar {filteredApplications.length} av {applications.length} ansökningar</p>}
+        {hasLoaded && (!loadError || applications.length > 0) && (
         <ApplicationList
           applications={filteredApplications}
           hasApplications={applications.length > 0}
           disabled={isSaving}
+          onResetFilters={() => { setSearchTerm(''); setStatusFilter('Alla') }}
           onEdit={(application) => {
             if (savingRef.current) return
             setEditingApplication(application)
             setShowForm(true)
+            setError('')
+            setSuccess('')
           }}
           onDelete={deleteApplication}
         />
+        )}
       </main>
     </div>
   )

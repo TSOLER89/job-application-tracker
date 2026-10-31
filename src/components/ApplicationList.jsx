@@ -5,7 +5,8 @@ function ApplicationList({
   onEdit,
   onDelete,
   hasApplications,
-  disabled
+  disabled,
+  onResetFilters
 }) {
   if (applications.length === 0) {
       return (
@@ -15,6 +16,7 @@ function ApplicationList({
             <>
             <h3>Inga träffar</h3>
             <p>Det finns inga jobbansökningar som matchar ditt filter.</p>
+            <button type="button" className="secondary-button" onClick={onResetFilters}>Rensa filter</button>
             </>
           ) : (
             <>

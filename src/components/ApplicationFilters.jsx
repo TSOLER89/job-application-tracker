@@ -2,19 +2,26 @@ function ApplicationFilters({
   searchTerm,
   onSearchChange,
   statusFilter,
-  onStatusChange
+  onStatusChange,
+  disabled
 }) {
   return (
     <div className="application-filters">
+      <label className="filter-field filter-search">
+      <span>Sök ansökningar</span>
       <input
+        disabled={disabled}
         type="search"
         placeholder="Sök företag, tjänst eller plats..."
         value={searchTerm}
         onChange={(event) => onSearchChange(event.target.value)}
         className="search-input"
       />
-
+      </label>
+      <label className="filter-field">
+      <span>Status</span>
       <select
+        disabled={disabled}
         value={statusFilter}
         onChange={(event) => onStatusChange(event.target.value)}
         className="status-filter"
@@ -26,6 +33,7 @@ function ApplicationFilters({
         <option value="Erbjudande">Erbjudande</option>
         <option value="Avslag">Avslag</option>
       </select>
+      </label>
     </div>
   )
 }

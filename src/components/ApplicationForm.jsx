@@ -38,6 +38,7 @@ function ApplicationForm({
     getInitialFormData(editingApplication)
   )
   const [selectedFile, setSelectedFile] = useState(null)
+  const [formError, setFormError] = useState('')
 
   const fileInputRef = useRef(null)
   const formRef = useRef(null)
@@ -52,6 +53,7 @@ function ApplicationForm({
   }, [editingApplication])
 
   function handleChange(event) {
+    setFormError('')
     const { name, value } = event.target
 
     setFormData((previousData) => {
@@ -71,11 +73,17 @@ function ApplicationForm({
   function handleImageChange(event) {
     const file = event.target.files[0]
 
-    setSelectedFile(file)
-
     if (!file) {
       return
     }
+
+    if (file.size > 5 * 1024 * 1024 || !/\.(jpe?g|png|webp)$/i.test(file.name)) {
+      setFormError('Välj en JPEG-, PNG- eller WebP-bild på högst 5 MiB.')
+      event.target.value = ''
+      return
+    }
+    setFormError('')
+    setSelectedFile(file)
 
     const reader = new FileReader()
 
@@ -111,6 +119,7 @@ function ApplicationForm({
       !formData.position.trim() ||
       !formData.location.trim()
     ) {
+      setFormError('Fyll i företag, tjänst och plats. Fälten får inte bara innehålla mellanslag.')
       return
     }
 
@@ -137,12 +146,15 @@ function ApplicationForm({
             ? 'Redigera jobbansökan'
             : 'Lägg till jobbansökan'}
         </h2>
+        <p className="form-hint">Företag, tjänst och plats är obligatoriska. Övriga uppgifter är valfria.</p>
+        {formError && <p className="feedback feedback-error" role="alert">{formError}</p>}
 
         <label>
           Företag
           <input
             type="text"
             name="company"
+            maxLength={200}
             value={formData.company}
             onChange={handleChange}
             placeholder="Skriv företagsnamn"
@@ -155,6 +167,7 @@ function ApplicationForm({
           <input
             type="text"
             name="position"
+            maxLength={200}
             value={formData.position}
             onChange={handleChange}
             placeholder="Skriv tjänstens namn"
@@ -167,6 +180,7 @@ function ApplicationForm({
           <input
             type="text"
             name="location"
+            maxLength={200}
             value={formData.location}
             onChange={handleChange}
             placeholder="Skriv plats"
@@ -204,6 +218,7 @@ function ApplicationForm({
           Anteckningar
           <textarea
             name="notes"
+            maxLength={5000}
             value={formData.notes}
             onChange={handleChange}
             placeholder="Skriv anteckningar om ansökan..."
@@ -216,9 +231,11 @@ function ApplicationForm({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+            aria-describedby="image-hint"
             onChange={handleImageChange}
           />
+          <small id="image-hint">JPEG, PNG eller WebP, högst 5 MiB.</small>
         </label>
 
         {formData.imageUrl && (
