@@ -13,7 +13,7 @@ import {
   uploadImage
 } from './services/applicationService'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function App() {
   const [applications, setApplications] = useState([])
@@ -22,24 +22,41 @@ function App() {
   const [showForm, setShowForm] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('Alla')
+  const [isSaving, setIsSaving] = useState(false)
+  const savingRef = useRef(false)
+  const requestVersionRef = useRef(0)
 
   // Ladda alla jobbansökningar när komponenten mountas
   useEffect(() => {
+    let active = true
     async function loadApplications() {
+      if (savingRef.current) return
+      const requestVersion = ++requestVersionRef.current
       try {
         const data = await getApplications()
-
+        if (!active || requestVersion !== requestVersionRef.current) return
         setApplications(data)
         setError('')
       } catch {
+        if (!active || requestVersion !== requestVersionRef.current) return
         setError('Kunde inte hämta jobbansökningar från servern.')
       }
     }
 
     loadApplications()
+    window.addEventListener('focus', loadApplications)
+    return () => {
+      active = false
+      window.removeEventListener('focus', loadApplications)
+    }
   }, [])
 
   async function addApplication(application, selectedFile) {
+    if (savingRef.current) return
+    savingRef.current = true
+    requestVersionRef.current++
+    setIsSaving(true)
+    setError('')
     try {
       let imageUrl = ''
 
@@ -62,10 +79,18 @@ function App() {
       setError('')
     } catch {
       setError('Kunde inte spara jobbansökan eller bilden.')
+    } finally {
+      savingRef.current = false
+      setIsSaving(false)
     }
   }
 
   async function updateApplication(updatedApplication, selectedFile) {
+    if (savingRef.current) return
+    savingRef.current = true
+    requestVersionRef.current++
+    setIsSaving(true)
+    setError('')
     try {
       let imageUrl = updatedApplication.imageUrl
 
@@ -95,10 +120,14 @@ function App() {
       setError('')
     } catch {
       setError('Kunde inte uppdatera jobbansökan eller bilden.')
+    } finally {
+      savingRef.current = false
+      setIsSaving(false)
     }
   }
 
   async function deleteApplication(id) {
+    if (savingRef.current) return
     const confirmed = window.confirm(
       'Är du säker på att du vill ta bort den här jobbansökan?'
     )
@@ -106,6 +135,8 @@ function App() {
     if (!confirmed) {
       return
     }
+
+    requestVersionRef.current++
 
     try {
       await deleteApplicationRequest(id)
@@ -156,6 +187,7 @@ function App() {
           <button
             type="button"
             className="add-application-button"
+            disabled={isSaving}
             onClick={() => {
               setEditingApplication(null)
               setShowForm(true)
@@ -171,6 +203,7 @@ function App() {
             onAdd={addApplication}
             onUpdate={updateApplication}
             editingApplication={editingApplication}
+            isSaving={isSaving}
             onCancelEdit={() => {
               setEditingApplication(null)
               setShowForm(false)
@@ -179,7 +212,7 @@ function App() {
         )}
 
         {error && (
-          <p className="error-message">
+          <p className="error-message" role="alert">
             {error}
           </p>
         )}
@@ -194,7 +227,9 @@ function App() {
         <ApplicationList
           applications={filteredApplications}
           hasApplications={applications.length > 0}
+          disabled={isSaving}
           onEdit={(application) => {
+            if (savingRef.current) return
             setEditingApplication(application)
             setShowForm(true)
           }}

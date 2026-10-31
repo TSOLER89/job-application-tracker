@@ -8,6 +8,7 @@ function ApplicationCard({
   status,
   notes,
   imageUrl,
+  disabled,
   onEdit,
   onDelete
 }) {
@@ -63,6 +64,7 @@ function ApplicationCard({
         <button
           type="button"
           className="edit-button"
+          disabled={disabled}
           onClick={onEdit}
         >
           Redigera
@@ -71,6 +73,7 @@ function ApplicationCard({
         <button
           type="button"
           className="delete-button"
+          disabled={disabled}
           onClick={onDelete}
         >
           Ta bort

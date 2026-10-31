@@ -31,6 +31,7 @@ function ApplicationForm({
   onAdd,
   onUpdate,
   editingApplication,
+  isSaving,
   onCancelEdit
 }) {
   const [formData, setFormData] = useState(() =>
@@ -101,8 +102,9 @@ function ApplicationForm({
     }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
+    if (isSaving) return
 
     if (
       !formData.company.trim() ||
@@ -113,21 +115,12 @@ function ApplicationForm({
     }
 
     if (editingApplication) {
-      onUpdate({
-        ...editingApplication,
-        ...formData
-      },
-    selectedFile
-  )
+      await onUpdate(
+        { ...editingApplication, ...formData },
+        selectedFile
+      )
     } else {
-      onAdd(formData, selectedFile)
-    }
-
-    setFormData(emptyForm)
-    setSelectedFile(null)
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      await onAdd(formData, selectedFile)
     }
   }
 
@@ -136,127 +129,128 @@ function ApplicationForm({
       ref={formRef}
       className="application-form"
       onSubmit={handleSubmit}
+      aria-busy={isSaving}
     >
-      <h2>
-        {editingApplication
-          ? 'Redigera jobbansökan'
-          : 'Lägg till jobbansökan'}
-      </h2>
-
-      <label>
-        Företag
-        <input
-          type="text"
-          name="company"
-          value={formData.company}
-          onChange={handleChange}
-          placeholder="Skriv företagsnamn"
-          required
-        />
-      </label>
-
-      <label>
-        Tjänst
-        <input
-          type="text"
-          name="position"
-          value={formData.position}
-          onChange={handleChange}
-          placeholder="Skriv tjänstens namn"
-          required
-        />
-      </label>
-
-      <label>
-        Plats
-        <input
-          type="text"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          placeholder="Skriv plats"
-          required
-        />
-      </label>
-
-      <label>
-        Ansökningsdatum
-        <input
-          type="date"
-          name="dateApplied"
-          value={formData.dateApplied}
-          onChange={handleChange}
-          disabled={formData.status === 'Intresserad'}
-        />
-      </label>
-
-      <label>
-        Status
-        <select
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-        >
-          <option value="Ansökt">Ansökt</option>
-          <option value="Intresserad">Intresserad</option>
-          <option value="Intervju">Intervju</option>
-          <option value="Erbjudande">Erbjudande</option>
-          <option value="Avslag">Avslag</option>
-        </select>
-      </label>
-
-      <label>
-        Anteckningar
-        <textarea
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-          placeholder="Skriv anteckningar om ansökan..."
-          rows="4"
-        />
-      </label>
-
-      <label>
-        Bild
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-      </label>
-
-      {formData.imageUrl && (
-        <div className="image-preview-container">
-          <p>Förhandsvisning</p>
-
-          <div className="image-preview-wrapper">
-            <img
-              src={getImageUrl(formData.imageUrl)}
-              alt="Förhandsvisning"
-              className="image-preview"
-            />
-
-            <button
-              type="button"
-              className="remove-image-button"
-              onClick={removeImage}
-              aria-label="Ta bort bild"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className="form-actions">
-        <button type="submit">
+      <fieldset disabled={isSaving} className="form-fields">
+        <h2>
           {editingApplication
-            ? 'Uppdatera ansökan'
-            : 'Spara ansökan'}
-        </button>
+            ? 'Redigera jobbansökan'
+            : 'Lägg till jobbansökan'}
+        </h2>
 
-    
+        <label>
+          Företag
+          <input
+            type="text"
+            name="company"
+            value={formData.company}
+            onChange={handleChange}
+            placeholder="Skriv företagsnamn"
+            required
+          />
+        </label>
+
+        <label>
+          Tjänst
+          <input
+            type="text"
+            name="position"
+            value={formData.position}
+            onChange={handleChange}
+            placeholder="Skriv tjänstens namn"
+            required
+          />
+        </label>
+
+        <label>
+          Plats
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            placeholder="Skriv plats"
+            required
+          />
+        </label>
+
+        <label>
+          Ansökningsdatum
+          <input
+            type="date"
+            name="dateApplied"
+            value={formData.dateApplied}
+            onChange={handleChange}
+            disabled={formData.status === 'Intresserad'}
+          />
+        </label>
+
+        <label>
+          Status
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+          >
+            <option value="Ansökt">Ansökt</option>
+            <option value="Intresserad">Intresserad</option>
+            <option value="Intervju">Intervju</option>
+            <option value="Erbjudande">Erbjudande</option>
+            <option value="Avslag">Avslag</option>
+          </select>
+        </label>
+
+        <label>
+          Anteckningar
+          <textarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            placeholder="Skriv anteckningar om ansökan..."
+            rows="4"
+          />
+        </label>
+
+        <label>
+          Bild
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </label>
+
+        {formData.imageUrl && (
+          <div className="image-preview-container">
+            <p>Förhandsvisning</p>
+
+            <div className="image-preview-wrapper">
+              <img
+                src={getImageUrl(formData.imageUrl)}
+                alt="Förhandsvisning"
+                className="image-preview"
+              />
+
+              <button
+                type="button"
+                className="remove-image-button"
+                onClick={removeImage}
+                aria-label="Ta bort bild"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="form-actions">
+          <button type="submit">
+            {isSaving ? 'Sparar...' : editingApplication
+              ? 'Uppdatera ansökan'
+              : 'Spara ansökan'}
+          </button>
+
           <button
             type="button"
             className="cancel-button"
@@ -265,7 +259,8 @@ function ApplicationForm({
             Avbryt
           </button>
 
-      </div>
+        </div>
+      </fieldset>
     </form>
   )
 }

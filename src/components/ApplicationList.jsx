@@ -4,7 +4,8 @@ function ApplicationList({
   applications, 
   onEdit,
   onDelete,
-  hasApplications
+  hasApplications,
+  disabled
 }) {
   if (applications.length === 0) {
       return (
@@ -38,6 +39,7 @@ function ApplicationList({
           status={application.status}
           notes={application.notes}
           imageUrl={application.imageUrl}
+          disabled={disabled}
           onEdit={() => onEdit(application)}
           onDelete={() => onDelete(application.id)}
         />
