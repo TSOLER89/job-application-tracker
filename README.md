@@ -155,7 +155,21 @@ Backend:
 
 https://github.com/TSOLER89/job-application-tracker-api
 
-Developer
+## Interface and feedback
+
+The interface uses a navy and blue palette shared with the mobile app. Each application status has its own color and visible text label.
+
+* Loading indicators and unknown statistics (`—`) distinguish loading from an empty list.
+* Connection errors offer a retry action. Previously loaded data remains visible and is labelled as such.
+* Creating, editing, and deleting an application displays a dismissible confirmation.
+* Saving errors retain the form and selected image. API validation messages appear in the interface.
+* Search and status controls have visible labels. Empty search results offer a reset action.
+* Keyboard focus indicators, a skip link, and live feedback support keyboard and screen-reader navigation.
+* The layout adapts from three columns to one and respects reduced-motion settings.
+
+Before a demo, check creating, editing, searching, status filtering, failed saves, and retrying a failed load at desktop and narrow mobile widths.
+
+## Developer
 
 Tsoler Hayitian
 .NET System Developer student
