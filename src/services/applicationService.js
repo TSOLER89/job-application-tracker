@@ -1,82 +1,55 @@
-//Backend-serverns address hämtas från miljövariabeln .env
-const BASE_URL = import.meta.env.VITE_API_BASE_URL
-
-// Gemensam endpoint för jobbansökningar
+﻿const BASE_URL = import.meta.env.VITE_API_BASE_URL
 const API_URL = `${BASE_URL}/api/JobApplications`
 
-
-// Hämtar alla jobbansökningar från API:t
-export async function getApplications() {
-  const response = await fetch(API_URL)
-
-  if (!response.ok) {
-    throw new Error('Kunde inte hämta jobbansökningar.')
+async function request(url, options) {
+  let response
+  try {
+    response = await fetch(url, options)
+  } catch {
+    throw new Error('Kunde inte nå servern. Kontrollera anslutningen och försök igen.')
   }
-
-  return response.json()
+  if (!response.ok) {
+    if (response.status >= 500) {
+      throw new Error('Servern kunde inte behandla din begäran. Försök igen om en stund.')
+    }
+    let message = 'Åtgärden kunde inte genomföras. Försök igen.'
+    try {
+      const problem = await response.json()
+      const errors = Object.values(problem.errors || {}).flat()
+      message = errors.length ? [...new Set(errors)].join(' ') : problem.title || message
+    } catch { /* A proxy may return a non-JSON error page. */ }
+    throw new Error(message)
+  }
+  return response.status === 204 ? null : response.json()
 }
 
-// Skapar en ny jobbansökan
-export async function createApplication(application) {
-  const response = await fetch(API_URL, {
+export function getApplications() {
+  return request(API_URL)
+}
+
+export function createApplication(application) {
+  return request(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(application)
   })
-
-  if (!response.ok) {
-    throw new Error('Kunde inte skapa jobbansökan.')
-  }
-
-  return response.json()
 }
 
-// Uppdaterar en befintlig jobbansökan
-export async function updateApplication(id, application) {
-  const response = await fetch(`${API_URL}/${id}`, {
+export function updateApplication(id, application) {
+  return request(`${API_URL}/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(application)
   })
-
-  if (!response.ok) {
-    throw new Error('Kunde inte uppdatera jobbansökan.')
-  }
-
-  return response.json()
 }
 
-
-// Tar bort en jobbansökan
-export async function deleteApplication(id) {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: 'DELETE'
-  })
-
-  if (!response.ok) {
-    throw new Error('Kunde inte ta bort jobbansökan.')
-  }
+export function deleteApplication(id) {
+  return request(`${API_URL}/${id}`, { method: 'DELETE' })
 }
 
-// Laddar upp en bild för en jobbansökan
 export async function uploadImage(file) {
   const formData = new FormData()
   formData.append('file', file)
-
-  const response = await fetch(`${API_URL}/uploadimage`, {
-    method: 'POST',
-    body: formData
-  })
-
-  if (!response.ok) {
-    throw new Error('Kunde inte ladda upp bilden.')
-  }
-
-  const data = await response.json()
-
-return data.imageUrl
+  const data = await request(`${API_URL}/uploadimage`, { method: 'POST', body: formData })
+  return data.imageUrl
 }
