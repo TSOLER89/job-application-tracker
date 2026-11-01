@@ -163,7 +163,9 @@ Web login uses an HttpOnly cookie and CSRF protection; session tokens and passwo
 
 The account password is a new JobTrack password. Gmail and Outlook inbox connections, email verification, password recovery, and the public demo are upcoming stages.
 
-The interface uses a navy and blue palette shared with the mobile app. Each application status has its own color and visible text label.
+The interface uses midnight blue and copper accents, neutral surfaces, consistent icons, and a compact account header. Desktop screens use a persistent side navigation; narrow screens use a horizontal navigation. Status colors and text labels remain distinct. The mobile app shares the same visual language.
+
+The workspace styles live in `src/styles/workspace.css`, separate from base component styles. Buttons keep visible keyboard focus and touch targets; reduced-motion settings are respected. Creating/editing applications, account access and existing statistics use the same API.
 
 * Loading indicators and unknown statistics (`—`) distinguish loading from an empty list.
 * Connection errors offer a retry action. Previously loaded data remains visible and is labelled as such.
