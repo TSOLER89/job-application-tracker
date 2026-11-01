@@ -1,10 +1,11 @@
 ﻿const BASE_URL = import.meta.env.VITE_API_BASE_URL
+import { apiFetch } from './authService'
 const API_URL = `${BASE_URL}/api/JobApplications`
 
 async function request(url, options) {
   let response
   try {
-    response = await fetch(url, options)
+    response = await apiFetch(url, options)
   } catch {
     throw new Error('Kunde inte nå servern. Kontrollera anslutningen och försök igen.')
   }

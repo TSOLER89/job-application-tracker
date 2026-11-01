@@ -15,7 +15,7 @@ import {
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-function App() {
+function App({ user, onLogout, isLoggingOut, logoutError }) {
   const [applications, setApplications] = useState([])
   const [error, setError] = useState('')
   const [loadError, setLoadError] = useState('')
@@ -209,6 +209,8 @@ function App() {
       <Header />
 
       <main className="main-content" id="main-content">
+        <div className="account-bar"><span>Inloggad som <strong>{user.email}</strong></span><button type="button" className="secondary-button" onClick={onLogout} disabled={isSaving || isLoggingOut}>{isLoggingOut ? 'Loggar ut…' : 'Logga ut'}</button></div>
+        {logoutError && <p className="feedback feedback-error" role="alert">{logoutError}</p>}
         <ApplicationStats applications={applications} loading={!hasLoaded} />
 
         <div aria-live="polite" aria-atomic="true">
