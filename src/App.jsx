@@ -5,6 +5,7 @@ import ApplicationForm from './components/ApplicationForm'
 import ApplicationStats from './components/ApplicationStats'
 import ApplicationFilters from './components/ApplicationFilters'
 import { usePageNavigation } from './hooks/use-page-navigation'
+import { useToday } from './hooks/use-today'
 
 import {
   getApplications,
@@ -18,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 function App({ user, onLogout, isLoggingOut, logoutError }) {
   const { page, navigate } = usePageNavigation()
+  const today = useToday()
   const [applications, setApplications] = useState([])
   const [error, setError] = useState('')
   const [loadError, setLoadError] = useState('')
@@ -295,6 +297,7 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
         {hasLoaded && <p className="results-count" aria-live="polite">Visar {filteredApplications.length} av {applications.length} ansökningar</p>}
         {hasLoaded && (!loadError || applications.length > 0) && (
         <ApplicationList
+          today={today}
           applications={filteredApplications}
           hasApplications={applications.length > 0}
           disabled={isSaving}

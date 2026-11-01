@@ -2,6 +2,7 @@ import ApplicationCard from './ApplicationCard'
 
 function ApplicationList({ 
   applications, 
+  today,
   onEdit,
   onDelete,
   hasApplications,
@@ -40,6 +41,7 @@ function ApplicationList({
           dateApplied={application.dateApplied}
           applicationDeadline={application.applicationDeadline}
           followUpDate={application.followUpDate}
+          today={today}
           status={application.status}
           notes={application.notes}
           imageUrl={application.imageUrl}

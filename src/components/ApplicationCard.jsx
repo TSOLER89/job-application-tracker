@@ -1,4 +1,5 @@
 import { getImageUrl } from '../utils/imageUrl'
+import { planningNotices } from '../utils/planningNotices'
 
 function ApplicationCard({
   company,
@@ -7,6 +8,7 @@ function ApplicationCard({
   dateApplied,
   applicationDeadline,
   followUpDate,
+  today,
   status,
   notes,
   imageUrl,
@@ -14,6 +16,7 @@ function ApplicationCard({
   onEdit,
   onDelete
 }) {
+  const notices = planningNotices({ status, applicationDeadline, followUpDate }, today)
   return (
     <article className="application-card">
       <div className="card-header">
@@ -29,6 +32,9 @@ function ApplicationCard({
         </span>
       </div>
 
+      {notices.length > 0 && <ul className="planning-notices" aria-label="Planering">
+        {notices.map(notice => <li key={notice.kind} className={`planning-notice planning-${notice.tone}`}>{notice.label}</li>)}
+      </ul>}
       {imageUrl && (
         <img
           src={getImageUrl(imageUrl)}

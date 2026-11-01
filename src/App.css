@@ -47,6 +47,11 @@
 .card-header > div { flex: 1; min-width: 120px; }
 .card-company { margin: 0; font-size: 1.2rem; line-height: 1.35; }
 .card-position { margin: 5px 0 0; color: var(--muted); font-size: .9rem; }
+.planning-notices { display: grid; gap: 8px; list-style: none; margin: 0 0 20px; padding: 0; }
+.planning-notice { border-radius: 8px; padding: 10px 12px; font-size: .8rem; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.planning-urgent { color: #991b1b; background: #fef2f2; }
+.planning-warning { color: #92400e; background: #fffbeb; }
+.planning-neutral { color: #1e40af; background: #eff6ff; }
 .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: .75rem; line-height: 1.5; font-weight: 700; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
 .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 .status-intresserad { background: #e5e7eb; color: #374151; }
