@@ -157,11 +157,13 @@ https://github.com/TSOLER89/job-application-tracker-api
 
 ## Interface and feedback
 
+**Mejlkonton** lists Gmail connections owned by the signed-in account, with a confirmed disconnect action. Google configuration and the `AddEmailConnections` backend migration are required; see the API repository's `docs/GMAIL_SETUP.md`. An unconfigured provider has a disabled connect action and setup guidance. OAuth starts in the desktop browser. Outlook and importing application emails come later.
+
 Visitors first see a welcome page with **Skapa konto** and **Logga in**. After registering or signing in, they see only their own applications and images. **Logga ut** revokes the current session.
 
 Web login uses an HttpOnly cookie and CSRF protection; session tokens and passwords are not saved in localStorage. A valid persistent session is restored on reload. The backend must have the account migration applied (`dotnet ef database update`). Existing applications are preserved separately until a local operator assigns their owner; see the backend README's **Preserving Existing Applications** section.
 
-The account password is a new JobTrack password. Gmail and Outlook inbox connections, email verification, password recovery, and the public demo are upcoming stages.
+The account password is a new JobTrack password. Gmail connections are configured separately; Outlook, email import, email verification, password recovery, and the public demo are upcoming stages.
 
 The interface uses midnight blue and copper accents, neutral surfaces, consistent icons, and a compact account header. Desktop screens use a persistent side navigation; narrow screens use a horizontal navigation. Status colors and text labels remain distinct. The mobile app shares the same visual language.
 
