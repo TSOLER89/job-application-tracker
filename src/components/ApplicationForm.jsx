@@ -6,6 +6,8 @@ const emptyForm = {
   position: '',
   location: '',
   dateApplied: '',
+  applicationDeadline: '',
+  followUpDate: '',
   status: 'Ansökt',
   notes: '',
   imageUrl: ''
@@ -21,6 +23,8 @@ function getInitialFormData(editingApplication) {
     position: editingApplication.position,
     location: editingApplication.location,
     dateApplied: editingApplication.dateApplied || '',
+    applicationDeadline: editingApplication.applicationDeadline || '',
+    followUpDate: editingApplication.followUpDate || '',
     status: editingApplication.status,
     notes: editingApplication.notes || '',
     imageUrl: editingApplication.imageUrl || ''
@@ -199,6 +203,15 @@ function ApplicationForm({
           />
         </label>
 
+        <label>
+          Sista ansökningsdag
+          <input type="date" name="applicationDeadline" value={formData.applicationDeadline} onChange={handleChange} />
+        </label>
+        <label>
+          Uppföljningsdatum
+          <input type="date" name="followUpDate" value={formData.followUpDate} onChange={handleChange} />
+        </label>
+        <p className="form-hint">Valfria datum för din planering. Du kan ändra eller ta bort dem senare.</p>
         <label>
           Status
           <select

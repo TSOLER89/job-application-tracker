@@ -38,6 +38,8 @@ function ApplicationList({
           position={application.position}
           location={application.location}
           dateApplied={application.dateApplied}
+          applicationDeadline={application.applicationDeadline}
+          followUpDate={application.followUpDate}
           status={application.status}
           notes={application.notes}
           imageUrl={application.imageUrl}

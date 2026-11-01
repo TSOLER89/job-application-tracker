@@ -85,7 +85,9 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
       const createdApplication = await createApplication({
         ...application,
         imageUrl,
-        dateApplied: application.dateApplied || null
+        dateApplied: application.dateApplied || null,
+        applicationDeadline: application.applicationDeadline || null,
+        followUpDate: application.followUpDate || null
       })
 
       setApplications((previousApplications) => [
@@ -124,7 +126,9 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
         {
           ...updatedApplication,
           imageUrl,
-          dateApplied: updatedApplication.dateApplied || null
+          dateApplied: updatedApplication.dateApplied || null,
+          applicationDeadline: updatedApplication.applicationDeadline || null,
+          followUpDate: updatedApplication.followUpDate || null
         }
       )
 

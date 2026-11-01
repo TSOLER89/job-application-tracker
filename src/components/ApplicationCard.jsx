@@ -5,6 +5,8 @@ function ApplicationCard({
   position,
   location,
   dateApplied,
+  applicationDeadline,
+  followUpDate,
   status,
   notes,
   imageUrl,
@@ -36,6 +38,8 @@ function ApplicationCard({
       )}
 
       <div className="card-details">
+        {applicationDeadline && <div className="card-detail"><span className="detail-label">Sista ansökningsdag</span><span>{applicationDeadline}</span></div>}
+        {followUpDate && <div className="card-detail"><span className="detail-label">Uppföljningsdatum</span><span>{followUpDate}</span></div>}
         <div className="card-detail">
           <span className="detail-label">Plats</span>
           <span>{location}</span>
