@@ -7,6 +7,7 @@ import ApplicationStats from './components/ApplicationStats'
 import UpcomingEvents from './components/UpcomingEvents'
 import OverviewSummary from './components/OverviewSummary'
 import AppIcon from './components/AppIcon'
+import EmailAccounts from './components/EmailAccounts'
 import ApplicationFilters from './components/ApplicationFilters'
 import { usePageNavigation } from './hooks/use-page-navigation'
 import { useToday } from './hooks/use-today'
@@ -243,6 +244,7 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
           <a href="/" aria-current={page === 'overview' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/', isSaving)}><AppIcon name="overview" />Översikt</a>
           <a href="/applications" aria-current={page === 'applications' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/applications', isSaving)}><AppIcon name="applications" />Jobbansökningar {hasLoaded && <span className="navigation-count">{applications.length}</span>}</a>
           <a href="/statistics" aria-current={page === 'statistics' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/statistics', isSaving)}><AppIcon name="statistics" />Statistik</a>
+          <a href="/email-accounts" aria-current={page === 'email-accounts' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/email-accounts', isSaving)}><AppIcon name="mail" />Mejlkonton</a>
         </nav>
 
         <div aria-live="polite" aria-atomic="true">
@@ -272,6 +274,7 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
           <a className="overview-applications-link" href="/statistics" onClick={event => navigate(event, '/statistics')}>Visa all statistik →</a>
         </section>}
 
+        {page === 'email-accounts' && <EmailAccounts />}
         {page === 'statistics' && <section aria-label="Statistik">
           <ApplicationStats applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} />
         </section>}
