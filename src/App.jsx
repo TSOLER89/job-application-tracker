@@ -4,6 +4,7 @@ import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
 import ApplicationStats from './components/ApplicationStats'
 import ApplicationFilters from './components/ApplicationFilters'
+import { usePageNavigation } from './hooks/use-page-navigation'
 
 import {
   getApplications,
@@ -16,6 +17,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 function App({ user, onLogout, isLoggingOut, logoutError }) {
+  const { page, navigate } = usePageNavigation()
   const [applications, setApplications] = useState([])
   const [error, setError] = useState('')
   const [loadError, setLoadError] = useState('')
@@ -208,10 +210,13 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
       <a className="skip-link" href="#main-content">Hoppa till innehållet</a>
       <Header />
 
-      <main className="main-content" id="main-content">
+      <main className="main-content" id="main-content" tabIndex={-1}>
         <div className="account-bar"><span>Inloggad som <strong>{user.email}</strong></span><button type="button" className="secondary-button" onClick={onLogout} disabled={isSaving || isLoggingOut}>{isLoggingOut ? 'Loggar ut…' : 'Logga ut'}</button></div>
         {logoutError && <p className="feedback feedback-error" role="alert">{logoutError}</p>}
-        <ApplicationStats applications={applications} loading={!hasLoaded} />
+        <nav className="page-navigation" aria-label="Huvudnavigation">
+          <a href="/" aria-current={page === 'overview' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/', isSaving)}>Översikt</a>
+          <a href="/applications" aria-current={page === 'applications' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/applications', isSaving)}>Jobbansökningar {hasLoaded && <span className="navigation-count">{applications.length}</span>}</a>
+        </nav>
 
         <div aria-live="polite" aria-atomic="true">
           {success && (
@@ -229,10 +234,20 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
         )}
         {error && <p className="feedback feedback-error" role="alert">{error} Dina övriga uppgifter finns kvar.</p>}
 
+        {isLoading && <p className="loading-state" role="status"><span className="loading-dot" aria-hidden="true" />{hasLoaded ? 'Uppdaterar ansökningar…' : 'Laddar dina ansökningar…'}</p>}
+
+        {page === 'overview' && <section aria-labelledby="overview-heading">
+          <div className="overview-heading"><div><p className="section-eyebrow">VÄLKOMMEN TILLBAKA</p><h2 id="overview-heading">Översikt</h2><p>Följ ditt jobbsökande och se hur dina ansökningar utvecklas.</p></div>
+            <a className="overview-applications-link" href="/applications" onClick={event => navigate(event, '/applications')}>Visa mina jobbansökningar →</a>
+          </div>
+          <ApplicationStats applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} />
+        </section>}
+
+        <section hidden={page !== 'applications'} aria-labelledby="applications-heading">
         <div className="applications-header">
           <div>
             <p className="section-eyebrow">DIN ÖVERSIKT</p>
-            <h2>Mina jobbansökningar</h2>
+            <h2 id="applications-heading">Mina jobbansökningar</h2>
           </div>
 
           <button
@@ -273,7 +288,6 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
           disabled={!hasLoaded}
         />
 
-        {isLoading && <p className="loading-state" role="status"><span className="loading-dot" aria-hidden="true" />{hasLoaded ? 'Uppdaterar ansökningar…' : 'Laddar dina ansökningar…'}</p>}
         {hasLoaded && <p className="results-count" aria-live="polite">Visar {filteredApplications.length} av {applications.length} ansökningar</p>}
         {hasLoaded && (!loadError || applications.length > 0) && (
         <ApplicationList
@@ -291,6 +305,7 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
           onDelete={deleteApplication}
         />
         )}
+        </section>
       </main>
     </div>
   )

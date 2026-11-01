@@ -42,6 +42,10 @@ export default function AuthRoot() {
   }
 
   if (loading) return <main className="auth-loading"><p className="loading-state" role="status">Kontrollerar inloggningen…</p></main>
-  if (!user) return <AuthScreen connectionError={error} onRetry={restore} onAuthenticated={account => { revisionRef.current++; setUser(account); setError('') }} />
+  if (!user) return <AuthScreen connectionError={error} onRetry={restore} onAuthenticated={account => {
+    window.history.replaceState(null, '', '/')
+    window.dispatchEvent(new PopStateEvent('popstate'))
+    revisionRef.current++; setUser(account); setError('')
+  }} />
   return <App key={user.id} user={user} onLogout={signOut} isLoggingOut={isLoggingOut} logoutError={error} />
 }
