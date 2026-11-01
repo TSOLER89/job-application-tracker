@@ -127,6 +127,11 @@ function ApplicationForm({
       return
     }
 
+    if (formData.status !== 'Intresserad' && formData.dateApplied && formData.followUpDate && formData.followUpDate < formData.dateApplied) {
+      setFormError('Uppföljningsdatum får inte ligga före ansökningsdatumet.')
+      return
+    }
+
     if (editingApplication) {
       await onUpdate(
         { ...editingApplication, ...formData },
@@ -212,6 +217,7 @@ function ApplicationForm({
           <input type="date" name="followUpDate" value={formData.followUpDate} onChange={handleChange} />
         </label>
         <p className="form-hint">Valfria datum för din planering. Du kan ändra eller ta bort dem senare.</p>
+        <p className="form-hint">Uppföljning görs tidigast på ansökningsdatumet och kan ligga efter sista ansökningsdagen.</p>
         <label>
           Status
           <select
