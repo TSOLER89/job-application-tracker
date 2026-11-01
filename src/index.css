@@ -1,19 +1,22 @@
-﻿:root {
-  --page: #f3f6fb;
+:root {
+  --page: #f6f4f1;
   --surface: #ffffff;
-  --ink: #172554;
-  --muted: #52627a;
-  --line: #dbe3ee;
-  --primary: #2563eb;
-  --radius: 16px;
+  --ink: #222a3b;
+  --muted: #626878;
+  --line: #e4e1db;
+  --primary: #9a4b2f;
+  --radius: 20px;
+  --soft: #f8eee7;
+  --shadow: 0 6px 24px rgb(34 42 59 / 4%);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--page); color: var(--ink); line-height: 1.5; }
+body { margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--page); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased; }
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
 button, input, select { min-height: 44px; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #9a4b2f; outline-offset: 3px; }
+button, a, input, select, textarea { transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease; }
 button:disabled { cursor: wait; opacity: .65; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

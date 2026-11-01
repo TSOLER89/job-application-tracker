@@ -1,10 +1,12 @@
 import './App.css'
+import './styles/workspace.css'
 import Header from './components/Header'
 import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
 import ApplicationStats from './components/ApplicationStats'
 import UpcomingEvents from './components/UpcomingEvents'
 import OverviewSummary from './components/OverviewSummary'
+import AppIcon from './components/AppIcon'
 import ApplicationFilters from './components/ApplicationFilters'
 import { usePageNavigation } from './hooks/use-page-navigation'
 import { useToday } from './hooks/use-today'
@@ -237,9 +239,10 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
       <main className="main-content" id="main-content" tabIndex={-1}>
         {logoutError && <p className="feedback feedback-error" role="alert">{logoutError}</p>}
         <nav className="page-navigation" aria-label="Huvudnavigation">
-          <a href="/" aria-current={page === 'overview' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/', isSaving)}>Översikt</a>
-          <a href="/applications" aria-current={page === 'applications' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/applications', isSaving)}>Jobbansökningar {hasLoaded && <span className="navigation-count">{applications.length}</span>}</a>
-          <a href="/statistics" aria-current={page === 'statistics' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/statistics', isSaving)}>Statistik</a>
+          <span className="navigation-caption">ARBETSYTA</span>
+          <a href="/" aria-current={page === 'overview' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/', isSaving)}><AppIcon name="overview" />Översikt</a>
+          <a href="/applications" aria-current={page === 'applications' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/applications', isSaving)}><AppIcon name="applications" />Jobbansökningar {hasLoaded && <span className="navigation-count">{applications.length}</span>}</a>
+          <a href="/statistics" aria-current={page === 'statistics' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/statistics', isSaving)}><AppIcon name="statistics" />Statistik</a>
         </nav>
 
         <div aria-live="polite" aria-atomic="true">
