@@ -4,6 +4,7 @@ import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
 import ApplicationStats from './components/ApplicationStats'
 import UpcomingEvents from './components/UpcomingEvents'
+import OverviewSummary from './components/OverviewSummary'
 import ApplicationFilters from './components/ApplicationFilters'
 import { usePageNavigation } from './hooks/use-page-navigation'
 import { useToday } from './hooks/use-today'
@@ -239,6 +240,7 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
         <nav className="page-navigation" aria-label="Huvudnavigation">
           <a href="/" aria-current={page === 'overview' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/', isSaving)}>Översikt</a>
           <a href="/applications" aria-current={page === 'applications' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/applications', isSaving)}>Jobbansökningar {hasLoaded && <span className="navigation-count">{applications.length}</span>}</a>
+          <a href="/statistics" aria-current={page === 'statistics' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/statistics', isSaving)}>Statistik</a>
         </nav>
 
         <div aria-live="polite" aria-atomic="true">
@@ -263,9 +265,13 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
           <div className="overview-heading"><div><p className="section-eyebrow">VÄLKOMMEN TILLBAKA</p><h2 id="overview-heading">Översikt</h2><p>Följ ditt jobbsökande och se hur dina ansökningar utvecklas.</p></div>
             <a className="overview-applications-link" href="/applications" onClick={event => navigate(event, '/applications')}>Visa mina jobbansökningar →</a>
           </div>
-          <ApplicationStats applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded}>
-            <UpcomingEvents applications={applications} today={today} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} onOpen={openEvent} />
-          </ApplicationStats>
+          <OverviewSummary applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} />
+          <UpcomingEvents applications={applications} today={today} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} onOpen={openEvent} />
+          <a className="overview-applications-link" href="/statistics" onClick={event => navigate(event, '/statistics')}>Visa all statistik →</a>
+        </section>}
+
+        {page === 'statistics' && <section aria-label="Statistik">
+          <ApplicationStats applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} />
         </section>}
 
         <section hidden={page !== 'applications'} aria-labelledby="applications-heading">

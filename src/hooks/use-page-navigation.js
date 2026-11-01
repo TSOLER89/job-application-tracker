@@ -11,7 +11,8 @@ function currentPage() {
 
 export function usePageNavigation() {
   const location = useSyncExternalStore(subscribe, currentPage, () => '/')
-  const page = location.split('?')[0] === '/applications' ? 'applications' : 'overview'
+  const path = location.split('?')[0]
+  const page = path === '/applications' ? 'applications' : path === '/statistics' ? 'statistics' : 'overview'
   const requestedId = Number(new URLSearchParams(location.split('?')[1] ?? '').get('application'))
   const applicationId = Number.isSafeInteger(requestedId) && requestedId > 0 ? requestedId : null
   function navigate(event, destination, disabled = false) {

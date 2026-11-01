@@ -11,7 +11,7 @@ export default function UpcomingEvents({ applications, today, loading, unavailab
       { key: 'upcoming', title: 'Kommande händelser', description: 'Dina närmaste planerade datum.', empty: 'Inga kommande datum. Lägg till en deadline eller uppföljning på ett jobb.' }
     ].map(group => {
       const events = groups[group.key]
-      const visible = expanded[group.key] ? events : events.slice(0, 5)
+      const visible = expanded[group.key] ? events : events.slice(0, 3)
       return <section className="events-panel" key={group.key} aria-labelledby={`events-${group.key}`} aria-busy={loading && !unavailable}>
         <div className="events-heading"><h3 id={`events-${group.key}`}>{group.title}</h3><span aria-label="Antal händelser">{ready ? events.length : '—'}</span></div>
         <p className="events-description">{group.description}</p>
@@ -29,7 +29,7 @@ export default function UpcomingEvents({ applications, today, loading, unavailab
                 </a>
               </li>)}
             </ul>
-            {events.length > 5 && <button className="secondary-button events-more" type="button" aria-expanded={!!expanded[group.key]} onClick={() => setExpanded(current => ({ ...current, [group.key]: !current[group.key] }))}>{expanded[group.key] ? 'Visa färre' : `Visa alla (${events.length})`}</button>}
+            {events.length > 3 && <button className="secondary-button events-more" type="button" aria-expanded={!!expanded[group.key]} onClick={() => setExpanded(current => ({ ...current, [group.key]: !current[group.key] }))}>{expanded[group.key] ? 'Visa färre' : `Visa alla (${events.length})`}</button>}
           </>}
       </section>
     })}
