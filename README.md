@@ -177,6 +177,12 @@ Before a demo, check creating, editing, searching, status filtering, failed save
 
 ## Dashboard statistics
 
+The overview shows status totals, **Behöver din uppmärksamhet** (today and past dates, oldest first), **Kommande händelser** (future dates, nearest first), then the monthly chart. Each event list initially shows five items and can expand. Only interested-job deadlines and submitted/interview follow-ups are included; offers and rejections are excluded. Missing or invalid dates produce no event. Initial loading/error states do not pretend that the account has no events.
+
+Selecting an event opens `/applications?application={id}`, resets list filters and highlights/focuses the matching card. The link supports reload, browser history and opening in a new tab. The application list remains on its own page. Labels and groups refresh at local midnight. All information comes from the signed-in account's existing API response; no database migration is needed.
+
+Run grouping checks with `node --test tests/upcoming-events.test.mjs`.
+
 When an application date is entered, a follow-up date before it is rejected with a Swedish error message. The same day or a later day is allowed, including after the application deadline. Interested jobs do not yet have an application date.
 
 Application cards show planning labels calculated from the user's local calendar day. Deadlines apply to **Intresserad** jobs; follow-ups apply to **Ansökt** and **Intervju**. Dates within three days are highlighted, due/overdue items use a stronger color, and every label includes text. **Erbjudande** and **Avslag** keep their saved dates without active prompts. Clear or move a follow-up date after completing it. Labels refresh at midnight and when returning to the app.
