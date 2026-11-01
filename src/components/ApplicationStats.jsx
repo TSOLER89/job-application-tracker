@@ -8,7 +8,7 @@ const metrics = [
   ['Avslag', 'Avslag', '#dc2626']
 ]
 
-export default function ApplicationStats({ applications, loading, unavailable }) {
+export default function ApplicationStats({ applications, loading, unavailable, children }) {
   const stats = applicationStatistics(applications)
   const ready = !loading && !unavailable
   const difference = stats.thisMonth - stats.previousMonth
@@ -29,6 +29,7 @@ export default function ApplicationStats({ applications, loading, unavailable })
           <span className="stat-description">{label === 'Totalt' ? 'Registrerade jobb' : 'Nuvarande status'}</span>
         </div>)}
       </div>
+      {children}
       <div className="activity-panel">
         <div className="activity-heading">
           <div><h3>Ansökningar över tid</h3><p>Ansökningsdatum · senaste sex månaderna</p></div>

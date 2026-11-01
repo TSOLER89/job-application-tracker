@@ -3,6 +3,7 @@ import Header from './components/Header'
 import ApplicationList from './components/ApplicationList'
 import ApplicationForm from './components/ApplicationForm'
 import ApplicationStats from './components/ApplicationStats'
+import UpcomingEvents from './components/UpcomingEvents'
 import ApplicationFilters from './components/ApplicationFilters'
 import { usePageNavigation } from './hooks/use-page-navigation'
 import { useToday } from './hooks/use-today'
@@ -18,7 +19,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 function App({ user, onLogout, isLoggingOut, logoutError }) {
-  const { page, navigate } = usePageNavigation()
+  const { page, navigate, applicationId } = usePageNavigation()
   const today = useToday()
   const [applications, setApplications] = useState([])
   const [error, setError] = useState('')
@@ -34,6 +35,22 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
   const [isSaving, setIsSaving] = useState(false)
   const savingRef = useRef(false)
   const requestVersionRef = useRef(0)
+
+  useEffect(() => {
+    if (page === 'applications' && applicationId && hasLoaded) {
+      const card = document.getElementById(`application-${applicationId}`)
+      card?.scrollIntoView({ block: 'center' })
+      card?.focus({ preventScroll: true })
+    }
+  }, [page, applicationId, hasLoaded])
+
+  function openEvent(event, id) {
+    if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && !isSaving) {
+      setSearchTerm('')
+      setStatusFilter('Alla')
+    }
+    navigate(event, `/applications?application=${id}`, isSaving)
+  }
 
   const loadApplications = useCallback(() => {
     if (savingRef.current) return
@@ -246,7 +263,9 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
           <div className="overview-heading"><div><p className="section-eyebrow">VÄLKOMMEN TILLBAKA</p><h2 id="overview-heading">Översikt</h2><p>Följ ditt jobbsökande och se hur dina ansökningar utvecklas.</p></div>
             <a className="overview-applications-link" href="/applications" onClick={event => navigate(event, '/applications')}>Visa mina jobbansökningar →</a>
           </div>
-          <ApplicationStats applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} />
+          <ApplicationStats applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded}>
+            <UpcomingEvents applications={applications} today={today} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} onOpen={openEvent} />
+          </ApplicationStats>
         </section>}
 
         <section hidden={page !== 'applications'} aria-labelledby="applications-heading">
@@ -298,6 +317,7 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
         {hasLoaded && (!loadError || applications.length > 0) && (
         <ApplicationList
           today={today}
+          selectedId={applicationId}
           applications={filteredApplications}
           hasApplications={applications.length > 0}
           disabled={isSaving}

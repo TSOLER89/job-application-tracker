@@ -2,6 +2,8 @@ import { getImageUrl } from '../utils/imageUrl'
 import { planningNotices } from '../utils/planningNotices'
 
 function ApplicationCard({
+  id,
+  highlighted,
   company,
   position,
   location,
@@ -18,7 +20,7 @@ function ApplicationCard({
 }) {
   const notices = planningNotices({ status, applicationDeadline, followUpDate }, today)
   return (
-    <article className="application-card">
+    <article id={`application-${id}`} className={`application-card${highlighted ? ' application-highlighted' : ''}`} tabIndex={-1}>
       <div className="card-header">
         <div>
           <h3 className="card-company">{company}</h3>

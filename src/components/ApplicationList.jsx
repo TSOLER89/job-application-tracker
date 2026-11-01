@@ -3,6 +3,7 @@ import ApplicationCard from './ApplicationCard'
 function ApplicationList({ 
   applications, 
   today,
+  selectedId,
   onEdit,
   onDelete,
   hasApplications,
@@ -35,6 +36,8 @@ function ApplicationList({
       {applications.map((application) => (
         <ApplicationCard
           key={application.id}
+          id={application.id}
+          highlighted={application.id === selectedId}
           company={application.company}
           position={application.position}
           location={application.location}

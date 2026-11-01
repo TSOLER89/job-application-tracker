@@ -43,6 +43,27 @@
 .results-count { color: var(--muted); font-size: .82rem; margin: 18px 0; }
 .application-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .application-card { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; overflow-wrap: anywhere; box-shadow: 0 4px 16px rgb(23 37 84 / 3%); }
+.application-highlighted { border-color: var(--primary); box-shadow: 0 0 0 3px #dbeafe; scroll-margin: 24px; }
+.events-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 20px; margin: 24px 0; }
+.events-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; min-width: 0; }
+.events-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.events-heading h3 { margin: 0; font-size: 1.1rem; }
+.events-heading > span { color: var(--muted); font-size: .8rem; font-weight: 700; border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; }
+.events-description, .events-empty { font-size: .82rem; line-height: 1.6; color: var(--muted); }
+.events-description { margin: 8px 0 18px; }
+.events-empty { margin: 0; background: var(--page); border-radius: 10px; padding: 16px; }
+.events-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.event-link { display: flex; flex-direction: column; gap: 5px; text-decoration: none; color: var(--ink); border: 1px solid var(--line); border-left: 3px solid var(--primary); border-radius: 10px; padding: 16px; overflow-wrap: anywhere; }
+.event-link:hover { background: var(--page); border-color: var(--primary); }
+.event-urgent { border-left-color: #b91c1c; }
+.event-warning { border-left-color: #d97706; }
+.event-company { font-size: .95rem; font-weight: 700; }
+.event-position, .event-date { color: var(--muted); font-size: .78rem; }
+.event-label { font-size: .8rem; font-weight: 600; line-height: 1.5; margin-top: 5px; }
+.event-urgent .event-label { color: #991b1b; }
+.event-open { font-size: .78rem; font-weight: 600; color: var(--primary); margin-top: 6px; }
+.events-more { margin-top: 16px; width: 100%; }
+@media (max-width: 760px) { .events-grid { grid-template-columns: minmax(0, 1fr); } .events-panel { padding: 18px; } }
 .card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
 .card-header > div { flex: 1; min-width: 120px; }
 .card-company { margin: 0; font-size: 1.2rem; line-height: 1.35; }
