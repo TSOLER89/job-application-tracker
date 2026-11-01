@@ -175,6 +175,20 @@ The interface uses a navy and blue palette shared with the mobile app. Each appl
 
 Before a demo, check creating, editing, searching, status filtering, failed saves, and retrying a failed load at desktop and narrow mobile widths.
 
+## Dashboard statistics
+
+After signing in, the overview at `/` shows statistics. The separate `/applications` page contains application cards, search, filters, and the create/edit form. Use the navigation to switch pages; browser back/forward and reload preserve the selected page. Unsaved form fields and filters remain in place when switching within the app. A production host must route these frontend URLs to `index.html`.
+
+The dashboard shows the total number of jobs and all five current statuses. The monthly chart covers the current calendar month and the preceding five months, using each application's application date. Changing its status does not move it to another month.
+
+Interested jobs are excluded from the chart. Missing or invalid dates and future dates are reported separately. All-time status totals still include these records. Search and status filters only affect the application list; statistics always cover the signed-in account's complete list. Changes appear after a successful save or deletion; focus refresh also picks up changes from the mobile app.
+
+Run the calendar and aggregation checks with Node.js 22 or later:
+
+```bash
+node --test tests/application-statistics.test.mjs
+```
+
 ## Developer
 
 Tsoler Hayitian
