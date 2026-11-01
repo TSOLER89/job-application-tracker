@@ -177,7 +177,7 @@ Before a demo, check creating, editing, searching, status filtering, failed save
 
 ## Dashboard statistics
 
-The overview shows status totals, **Behöver din uppmärksamhet** (today and past dates, oldest first), **Kommande händelser** (future dates, nearest first), then the monthly chart. Each event list initially shows five items and can expand. Only interested-job deadlines and submitted/interview follow-ups are included; offers and rejections are excluded. Missing or invalid dates produce no event. Initial loading/error states do not pretend that the account has no events.
+The overview shows four compact counters (total jobs, submitted, interviews, offers), **Behöver din uppmärksamhet** (today and past dates, oldest first), and **Kommande händelser** (future dates, nearest first). Each event list initially shows three items and can expand. Only interested-job deadlines and submitted/interview follow-ups are included; offers and rejections are excluded. Missing or invalid dates produce no event. Initial loading/error states do not pretend that the account has no events.
 
 Selecting an event opens `/applications?application={id}`, resets list filters and highlights/focuses the matching card. The link supports reload, browser history and opening in a new tab. The application list remains on its own page. Labels and groups refresh at local midnight. All information comes from the signed-in account's existing API response; no database migration is needed.
 
@@ -191,9 +191,9 @@ Check the notice rules with `node --test tests/planning-notices.test.mjs`. These
 
 Create and edit forms also provide optional **Sista ansökningsdag** and **Uppföljningsdatum** fields. Saved dates appear on application cards; clear a field and save to remove it. Both fields work for interested jobs as well. The API needs the `AddApplicationPlanningDates` migration. This stage stores dates; scheduled notifications come later.
 
-After signing in, the overview at `/` shows statistics. The separate `/applications` page contains application cards, search, filters, and the create/edit form. Use the navigation to switch pages; browser back/forward and reload preserve the selected page. Unsaved form fields and filters remain in place when switching within the app. A production host must route these frontend URLs to `index.html`.
+After signing in, `/` shows the compact overview. The separate `/applications` page contains application cards, search, filters, and the create/edit form. `/statistics` contains full statistics and the monthly chart. Use **Översikt · Jobbansökningar · Statistik** to switch pages; browser back/forward and reload preserve the selected page. Unsaved form fields and filters remain in place when switching within the app. A production host must route these frontend URLs to `index.html`.
 
-The dashboard shows the total number of jobs and all five current statuses. The monthly chart covers the current calendar month and the preceding five months, using each application's application date. Changing its status does not move it to another month.
+The statistics page shows the total number of jobs and all five current statuses. Its monthly chart covers the current calendar month and the preceding five months, using each application's application date. Changing its status does not move it to another month.
 
 Interested jobs are excluded from the chart. Missing or invalid dates and future dates are reported separately. All-time status totals still include these records. Search and status filters only affect the application list; statistics always cover the signed-in account's complete list. Changes appear after a successful save or deletion; focus refresh also picks up changes from the mobile app.
 
