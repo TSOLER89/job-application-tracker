@@ -157,6 +157,12 @@ https://github.com/TSOLER89/job-application-tracker-api
 
 ## Interface and feedback
 
+Visitors first see a welcome page with **Skapa konto** and **Logga in**. After registering or signing in, they see only their own applications and images. **Logga ut** revokes the current session.
+
+Web login uses an HttpOnly cookie and CSRF protection; session tokens and passwords are not saved in localStorage. A valid persistent session is restored on reload. The backend must have the account migration applied (`dotnet ef database update`). Existing applications are preserved separately until a local operator assigns their owner; see the backend README's **Preserving Existing Applications** section.
+
+The account password is a new JobTrack password. Gmail and Outlook inbox connections, email verification, password recovery, and the public demo are upcoming stages.
+
 The interface uses a navy and blue palette shared with the mobile app. Each application status has its own color and visible text label.
 
 * Loading indicators and unknown statistics (`—`) distinguish loading from an empty list.
