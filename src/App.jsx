@@ -232,10 +232,9 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
   return (
     <div className="app">
       <a className="skip-link" href="#main-content">Hoppa till innehållet</a>
-      <Header />
+      <Header email={user.email} onLogout={onLogout} isLoggingOut={isLoggingOut} logoutDisabled={isSaving} />
 
       <main className="main-content" id="main-content" tabIndex={-1}>
-        <div className="account-bar"><span>Inloggad som <strong>{user.email}</strong></span><button type="button" className="secondary-button" onClick={onLogout} disabled={isSaving || isLoggingOut}>{isLoggingOut ? 'Loggar ut…' : 'Logga ut'}</button></div>
         {logoutError && <p className="feedback feedback-error" role="alert">{logoutError}</p>}
         <nav className="page-navigation" aria-label="Huvudnavigation">
           <a href="/" aria-current={page === 'overview' ? 'page' : undefined} aria-disabled={isSaving || undefined} onClick={event => navigate(event, '/', isSaving)}>Översikt</a>
@@ -262,7 +261,7 @@ function App({ user, onLogout, isLoggingOut, logoutError }) {
         {isLoading && <p className="loading-state" role="status"><span className="loading-dot" aria-hidden="true" />{hasLoaded ? 'Uppdaterar ansökningar…' : 'Laddar dina ansökningar…'}</p>}
 
         {page === 'overview' && <section aria-labelledby="overview-heading">
-          <div className="overview-heading"><div><p className="section-eyebrow">VÄLKOMMEN TILLBAKA</p><h2 id="overview-heading">Översikt</h2><p>Följ ditt jobbsökande och se hur dina ansökningar utvecklas.</p></div>
+          <div className="overview-heading"><div><h2 id="overview-heading">Översikt</h2><p>Följ ditt jobbsökande och se hur dina ansökningar utvecklas.</p></div>
             <a className="overview-applications-link" href="/applications" onClick={event => navigate(event, '/applications')}>Visa mina jobbansökningar →</a>
           </div>
           <OverviewSummary applications={applications} loading={!hasLoaded} unavailable={!!loadError && !hasLoaded} />

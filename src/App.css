@@ -2,7 +2,19 @@
 .skip-link { position: fixed; left: 16px; top: -80px; padding: 12px 20px; background: white; color: var(--ink); z-index: 10; border-radius: 8px; }
 .skip-link:focus { top: 12px; }
 .header { background: #172554; color: white; padding: 44px 24px 48px; border-bottom: 4px solid #2563eb; }
-.header-inner { width: 100%; max-width: 1160px; margin: 0 auto; }
+.header-inner { width: 100%; max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.header-brand { min-width: 0; }
+.header-account { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; max-width: 360px; min-width: 0; }
+.header-identity { display: flex; flex-direction: column; gap: 5px; text-align: right; overflow-wrap: anywhere; font-size: .88rem; }
+.header-identity > span { color: #bfdbfe; font-size: .75rem; }
+.header-logout { min-height: 44px; padding: 10px 18px; border: 1px solid #93b4e7; color: white; background: #24366a; border-radius: 10px; font-weight: 600; }
+.header-logout:hover:not(:disabled) { background: #304980; }
+@media (max-width: 720px) {
+  .header-inner { flex-direction: column; align-items: stretch; gap: 24px; }
+  .header-account { max-width: none; flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
+  .header-identity { text-align: left; min-width: 0; flex: 1; }
+  .header-logout { flex-shrink: 0; }
+}
 .header-eyebrow { color: #bfdbfe; font-size: .72rem; font-weight: 700; letter-spacing: .16em; }
 .header h1 { margin: 6px 0; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.15; letter-spacing: -.05em; }
 .header p { margin: 12px 0 0; color: #dbeafe; font-size: 1.05rem; }
@@ -160,7 +172,6 @@
 .auth-card .feedback button { width: auto; margin: 0; }
 .auth-back { background: transparent; color: var(--muted); border: 0; padding: 8px; }
 .auth-loading { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
-.account-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; font-size: .9rem; color: var(--muted); overflow-wrap: anywhere; }
 .page-navigation { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 28px; }
 .page-navigation a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; min-height: 44px; border-radius: 10px; color: var(--muted); text-decoration: none; font-weight: 600; }
 .page-navigation a[aria-current=page] { color: white; background: var(--primary); }
