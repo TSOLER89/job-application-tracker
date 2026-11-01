@@ -177,6 +177,8 @@ Before a demo, check creating, editing, searching, status filtering, failed save
 
 ## Dashboard statistics
 
+Create and edit forms also provide optional **Sista ansökningsdag** and **Uppföljningsdatum** fields. Saved dates appear on application cards; clear a field and save to remove it. Both fields work for interested jobs as well. The API needs the `AddApplicationPlanningDates` migration. This stage stores dates; scheduled notifications come later.
+
 After signing in, the overview at `/` shows statistics. The separate `/applications` page contains application cards, search, filters, and the create/edit form. Use the navigation to switch pages; browser back/forward and reload preserve the selected page. Unsaved form fields and filters remain in place when switching within the app. A production host must route these frontend URLs to `index.html`.
 
 The dashboard shows the total number of jobs and all five current statuses. The monthly chart covers the current calendar month and the preceding five months, using each application's application date. Changing its status does not move it to another month.
