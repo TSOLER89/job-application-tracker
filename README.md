@@ -177,6 +177,12 @@ Before a demo, check creating, editing, searching, status filtering, failed save
 
 ## Dashboard statistics
 
+When an application date is entered, a follow-up date before it is rejected with a Swedish error message. The same day or a later day is allowed, including after the application deadline. Interested jobs do not yet have an application date.
+
+Application cards show planning labels calculated from the user's local calendar day. Deadlines apply to **Intresserad** jobs; follow-ups apply to **Ansökt** and **Intervju**. Dates within three days are highlighted, due/overdue items use a stronger color, and every label includes text. **Erbjudande** and **Avslag** keep their saved dates without active prompts. Clear or move a follow-up date after completing it. Labels refresh at midnight and when returning to the app.
+
+Check the notice rules with `node --test tests/planning-notices.test.mjs`. These are in-app labels; background notifications are a later stage.
+
 Create and edit forms also provide optional **Sista ansökningsdag** and **Uppföljningsdatum** fields. Saved dates appear on application cards; clear a field and save to remove it. Both fields work for interested jobs as well. The API needs the `AddApplicationPlanningDates` migration. This stage stores dates; scheduled notifications come later.
 
 After signing in, the overview at `/` shows statistics. The separate `/applications` page contains application cards, search, filters, and the create/edit form. Use the navigation to switch pages; browser back/forward and reload preserve the selected page. Unsaved form fields and filters remain in place when switching within the app. A production host must route these frontend URLs to `index.html`.
