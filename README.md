@@ -71,9 +71,19 @@ Make sure the backend is running on:
 
 http://localhost:5250
 
-The project .env file contains:
+Create your local environment file from the tracked example (PowerShell):
 
+```powershell
+Copy-Item .env.example .env
+```
+
+For an existing checkout, keep your current `.env` instead of overwriting it. Set the API address in that file:
+
+```dotenv
 VITE_API_BASE_URL=http://localhost:5250
+```
+
+`.env` and its environment-specific variants are ignored by Git; `.env.example` is versioned for setup instructions. Variables prefixed with `VITE_` are included in the browser build and must never contain passwords, OAuth client secrets, or private API keys. Backend secrets belong in server-side configuration. Restart Vite after changing the environment file. For deployment, supply the public HTTPS API address before building the frontend.
 
 Start the frontend:
 
